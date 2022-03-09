@@ -5,8 +5,8 @@ import java.util.ArrayList;
 public class EventQueue {
 	
 	int Time = 0;
-	ArrayList<Object> Queue = new ArrayList<Object>();
-	ArrayList<Object> Temp = new ArrayList<Object>();
+	ArrayList<Event> Queue = new ArrayList<Event>();
+	ArrayList<Event> Temp = new ArrayList<Event>();
 	
 	public EventQueue(){
 		
@@ -14,15 +14,14 @@ public class EventQueue {
 		
 	}
 	
-	public void AddEvent(Object Event) {
-		int NewEventTime = Event.time;
+	public void AddEvent(Event Ev) {
 		if (Queue.isEmpty()) {
-			Queue.add(Event);
+			Queue.add(Ev);
 			return;
 		}
 		for (int i = 0; i<=Queue.size(); i++) {
-			if (NewEventTime <= Queue.get(i).time) {
-				Temp.add(Event);
+			if (Ev.GetExecutionTime() <= Queue.get(i).GetExecutionTime()) {
+				Temp.add(Ev);
 			}
 			else {
 				Temp.add(Queue.get(i));
