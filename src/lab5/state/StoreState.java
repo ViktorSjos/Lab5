@@ -21,7 +21,7 @@ public class StoreState {
 	
 	
 	
-	int MaxCustomers = 20; //maximalt antal customers
+	int MaxCustomers; //maximalt antal customers
 	int MissedCustomers = 0;
 	int TimeInQueue= 0; // en Variabel som costumerQueue får ändra på.
 	int TimePlockTid=0; //
@@ -30,8 +30,15 @@ public class StoreState {
 	public boolean Open = false //Om det får komma in nya kunder.
 	
 	
-	public StoreState() {
+	public StoreState(int AntalKassor,int maxKunder) {
 		//Constructor
+		for(int i; i>=AntalKassor; i++){ //skapar kassor
+			Kassor.add(Kassa(i)); 
+		}
+		MaxCustomers=maxKunder;
+		
+		
+		
 	}
 	
 	public Customer AddCustomer() {
