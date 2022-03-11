@@ -26,6 +26,8 @@ public class StoreState {
 	int LastTime=0;
 	
 	int CustomerNr=0
+		
+	int köat=0
 	public boolean Open = false //Om det får komma in nya kunder.
 	
 	
@@ -78,7 +80,10 @@ public class StoreState {
 				}
 			}else{// om alla kassor är upptagna ställer sig kunden i  kön.
 			CustomersInStore.Remove(CustomersInStore.indexOf(Costumer));
+			UpdateTimeInQueue();//varje gång köns tillstånd ändras måste denna köras.
 			CustomersInQueue.add(Customer); //så som jag gjort det nu behövs inte customerqueue...
+			köat++ // antalet som stått i kön totalt
+			
 			}
 			
 		return;
