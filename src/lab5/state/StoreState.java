@@ -72,7 +72,7 @@ public class StoreState {
 	
 	public void SendToQueue(int Customer){ // det här borde vara ett event, Eftersom plock event är klart.
 		
-		if (ComstumerQueue.Queue.isEmpty() && LedigaKassor>0){// om kön är tom och det finns ledig kassa.
+		if (ComstumerQueue.isEmpty() && LedigaKassor>0){// om kön är tom och det finns ledig kassa.
 				CustomersInStore.Remove(CustomersInStore.indexOf(Costumer)); //tar bort kunden från Instore och flyttar till en kassa
 				CustomersPaying.add(Costumer); //lägger till som betalande
 				LedigaKassor--;
