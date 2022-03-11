@@ -32,9 +32,15 @@ public class EventQueue {
 		
 	}
 	
-	public void DoEvent(Object Event) {
+	public void DoEvent(Object Event) { // kanske bara borde retunera eventet. 
 		Queue.get(0);
 		Queue.remove(0);
+		// if (Queue.isEmpty()==False){
+		// x = Queue.get(0);
+		// Queue.remove(0);
+		// return x.ExecuteEffect //borde gå att endast skicka metoden som har en effekt tillbaka. Då skickar vi allt vi behöver från event till simulation. 
+		// det borde fungera eftersom metoden inte längre behöver hämta information från eventklassen utan endast från state. (beroende på hur vi gör med customers osv.
+		//} else{return}
 	}
 
 }
