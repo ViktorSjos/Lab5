@@ -24,6 +24,7 @@ public class StoreState {
 	int TimePlockTid=0; //
 	
 	int LastTime=0;
+	int LastTimePayed=0;
 	
 	int CustomerNr=0
 		
@@ -92,10 +93,15 @@ public class StoreState {
 		
 	}
 	}
-	public UpdateTimeInQueue(float Time){//Varje gång kön ändras måste denna uppdateras? Innan kön har blivit uppdaterad. Alltså vid plockhändelse och betalningshändelse.
+	public UpdateTimeInQueue(float Time){//Varje gång kön ändras måste denna uppdateras, Innan kön har uppdaterats. Alltså vid plockhändelse och betalningshändelse.
 		TimeInQueue+=CustomersInQueue.size()*(Time-LastTime); 
 		LastTime=Time; // LastTime är senast kön blev uppdaterad.
 	}
+	public UpdateTimeInKassa(float Time){//Varje gång Kassorna uppdateras ändras måste denna uppdateras innan uppdateringen sker, med tiden som uppdateringen ska ske
+		TimeInQueue+=CustomersPaying.size()*(Time-LastTimePayed); 
+		LastTimePayed=Time; // LastTime är senast kön blev uppdaterad.
+	}
+	
 	
 
 
