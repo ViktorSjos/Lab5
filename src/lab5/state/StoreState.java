@@ -22,9 +22,10 @@ public class StoreState {
 	float currentTime=0; // ändra från mainloop i simulation
 	int MaxCustomers; //maximalt antal customers
 	int MissedCustomers = 0;
-	int TimeInQueue= 0; // en Variabel som costumerQueue får ändra på.
+	int TimeInQueue=0; // en Variabel som costumerQueue får ändra på.
 	int TimePlockTid=0; //
 	
+	int LastTime=0;
 	
 	public boolean Open = false //Om det får komma in nya kunder.
 	
@@ -70,14 +71,13 @@ public class StoreState {
 			
 		return;
 		
-		}
+		
 		
 	}
 	}
-	public UpdateTimeInQueue(float time){//kalla varje gång ett nytt event updateras?
-		
-		
-		
+	public UpdateTimeInQueue(float Time){//Varje gång kön ändras måste denna uppdateras? Innan kön har blivit uppdaterad. Alltså vid plockhändelse och betalningshändelse.
+		TimeInQueue+=CustomersInQueue.size()*(Time-LastTime); 
+		LastTime=Time; // LastTime är senast kön blev uppdaterad.
 	}
 	
 
