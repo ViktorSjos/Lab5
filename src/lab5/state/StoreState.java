@@ -12,15 +12,14 @@ public class StoreState {
 	CreateCustomer createCustomer = new CreateCustomer(); // nu har vi ju customers som objekt
 	
 	
-	ArrayList<Kassa> Kassor = new ArrayList<Kassa>();
-	
+	int LedigaKassor; 
 	int[] Customers; // borde det inte vara så här det ska stå, alla som är inne i affären, Fylls alltid på med det minsta lediga positiva heltalet.
 	int[] CustomersInStore; // alla som plockar i affären
 	int[] CustomersInQueue;	// alla som står i kö i affären, costumerQueue håller reda på ordningen.
 	int[] CustomersPaying; // alla som för tillfället håller på att betala  ,när en person flyttas från CustomersPaying försvinner också den från customers, Då är en ny int ledig för nästa kund,
 	
 	
-	
+	float currentTime=0; // ändra från mainloop i simulation
 	int MaxCustomers; //maximalt antal customers
 	int MissedCustomers = 0;
 	int TimeInQueue= 0; // en Variabel som costumerQueue får ändra på.
@@ -32,9 +31,7 @@ public class StoreState {
 	
 	public StoreState(int AntalKassor,int maxKunder) {
 		//Constructor
-		for(int i; i>=AntalKassor; i++){ //skapar kassor
-			Kassor.add(Kassa(i)); 
-		}
+		LeidgaKassor=AntalKassor; 
 		MaxCustomers=maxKunder;
 		
 		
@@ -60,15 +57,13 @@ public class StoreState {
 	
 	public void SendToQueue(int Customer){ // det här borde vara ett event, Eftersom plock event är klart.
 		
-		if (ComstumerQueue.Queue.isEmpty()){// om kön är tom se om det finns ledig kassa.
-			for(int i=0; i<Kassor.size(); i++){
-				if(Kassor.get(i).isOccupid==false){ //Någon kassa är ledig flyttas kunden direkt till kassan
-					CustomersInStore.Remove(CustomersInStore.indexOf(Costumer)); //tar bort kunden från Instore och flyttar till en kassa
-					CustomersPaying.add(Costumer); //lägger till som betalande
-					Kassor.get(i).newCustomer();
-					return;
+		if (ComstumerQueue.Queue.isEmpty() && LedigaKassor>0){// om kön är tom och det finns ledig kassa.
+				CustomersInStore.Remove(CustomersInStore.indexOf(Costumer)); //tar bort kunden från Instore och flyttar till en kassa
+				CustomersPaying.add(Costumer); //lägger till som betalande
+				LedigaKassor--;
+				return; //den här borde också skapa ett nytt event som är ett betalningsevent som också borde räkna ut en ny tid.
 				}
-			}else{// om alla kassor är upptagna flyttas kunden till kön.
+			}else{// om alla kassor är upptagna ställer sig kunden i  kön.
 			CustomersInStore.Remove(CustomersInStore.indexOf(Costumer));
 			CustomersInQueue.add(Customer); //så som jag gjort det nu behövs inte customerqueue...
 			}
@@ -78,21 +73,11 @@ public class StoreState {
 		}
 		
 	}
-	private class Kassa(){ //ska (eller kan) läggas i annan fil event ändrar sedan kassan till tom eller occupied, samt andra funktioner som påverkar kön.
-		boolean isOccupied=False;
-		int CustomerNr=-1 // -1 om kassan inte har en Costumer i sig, annars customerNR
-		int KassaNummer;
-		public Kassa(int KassaNr){ //konstrukorn
-			KassaNummer=KassaNr;
-		public newCustomer(int Customer){
-			isOccupid=true;
-			CustomerNr=Costumer;
-		}
-		public CustomerLeaving(){ //den här borde nog också kommunicera med costumerqueue för att hämta en ny kund till kassan.
-			isOccupied=false;	
-			CustomerNr=-1;
-		}
-		}
+	}
+	public UpdateTimeInQueue(float time){//kalla varje gång ett nytt event updateras?
+		
+		
+		
 	}
 	
 
