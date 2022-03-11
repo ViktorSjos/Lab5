@@ -7,9 +7,7 @@ import lab5.state.CreateCustomer.Customer;
 
 
 public class StoreState {
-	
-	ArrayList<Customer> CustomersInStore = new ArrayList<Customer>();
-	CreateCustomer createCustomer = new CreateCustomer(); // nu har vi ju customers som objekt
+
 	
 	
 	int LedigaKassor; 
@@ -27,6 +25,7 @@ public class StoreState {
 	
 	int LastTime=0;
 	
+	int CustomerNr=0
 	public boolean Open = false //Om det får komma in nya kunder.
 	
 	
@@ -39,14 +38,27 @@ public class StoreState {
 		
 	}
 	
-	public Customer AddCustomer() {
+	public void AddCustomer(int CustomerNr) {
+		CustomersInStore.add(CustomerNr);
+		Customer.add(CustomerNr);
+		//Skapa Plockevent !!!
 
-		Customer newCustomer = createCustomer.NewCustomer();
-		return newCustomer;
 	}
 	
-	public void CustomerArrived(Customer c) {
-		CustomersInStore.add(c);
+	public void CustomerArrived() { // Lägg till event får köra den här
+		if (CustomerInStore>=MaxCustomers && Open==true){
+			MissedCustomers++;
+			CustomerNr++;
+		}else{
+			if(Open){
+				addCustomer(CustomerNr);
+				CustomerNr++;
+			}
+		CustomerNr++;
+		}
+		}
+		
+			
 	}
 	
 	public boolean SpaceAvalible() {
