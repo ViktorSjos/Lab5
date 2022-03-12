@@ -5,72 +5,70 @@ import java.util.ArrayList;
 import lab5.events.Event;
 import lab5.state.CreateCustomer.Customer;
 
-
 public class StoreState {
 
-	
-	
-	int LedigaKassor; 
-	int[] Customers; // borde det inte vara så här det ska stå, alla som är inne i affären, Fylls alltid på med det minsta lediga positiva heltalet.
+	int LedigaKassor;
+	int[] Customers; // borde det inte vara så här det ska stå, alla som är inne i affären, Fylls
+						// alltid på med det minsta lediga positiva heltalet.
 	int[] CustomersInStore; // alla som plockar i affären
-	int[] CustomersInQueue;	// alla som står i kö i affären, costumerQueue håller reda på ordningen.
-	int[] CustomersPaying; // alla som för tillfället håller på att betala  ,när en person flyttas från CustomersPaying försvinner också den från customers, Då är en ny int ledig för nästa kund,
-	
-	
-	float currentTime=0; // ändra från mainloop i simulation
-	int MaxCustomers; //maximalt antal customers
+	int[] CustomersInQueue; // alla som står i kö i affären, costumerQueue håller reda på ordningen.
+	int[] CustomersPaying; // alla som för tillfället håller på att betala ,när en person flyttas från
+							// CustomersPaying försvinner också den från customers, Då är en ny int ledig
+							// för nästa kund,
+
+	float currentTime = 0; // ändra från mainloop i simulation
+	int MaxCustomers; // maximalt antal customers
 	int MissedCustomers = 0;
-	int TimeInQueue=0; // en Variabel som costumerQueue får ändra på.
-	int TimePlockTid=0; //
-	
-	int LastTime=0;
-	int LastTimePayed=0;
-	
-	int CustomerNr=0
-		
-	int köat=0
-	public boolean Open = false //Om det får komma in nya kunder.
-	
-	
-	public StoreState(int AntalKassor,int maxKunder) {
-		//Constructor
-		LeidgaKassor=AntalKassor; 
-		MaxCustomers=maxKunder;
-		
-		
-		
+	int TimeInQueue = 0; // en Variabel som costumerQueue får ändra på.
+	int TimePlockTid = 0; //
+
+	int LastTime = 0;
+	int LastTimePayed = 0;
+
+	int CustomerNr = 0;
+
+	int currCustom = 0; // Variabel som ändras när ett event körs för att veta vilken kund som gör
+						// något. Skickas senare till view
+
+	int köat = 0;
+	public boolean Open = false; // Om det får komma in nya kunder.
+
+	public StoreState(int AntalKassor, int maxKunder) {
+		// Constructor
+		LedigaKassor = AntalKassor;
+		MaxCustomers = maxKunder;
+
 	}
-	
+
 	public void AddCustomer(int CustomerNr) {
 		CustomersInStore.add(CustomerNr);
 		Customer.add(CustomerNr);
-		//Skapa Plockevent !!!
+		// Skapa Plockevent !!!
 
 	}
-	
+
 	public void CustomerArrived() { // Lägg till event får köra den här
-		if (CustomerInStore>=MaxCustomers && Open==true){
+		if (CustomerInStore >= MaxCustomers && Open == true) {
 			MissedCustomers++;
 			CustomerNr++;
-		}else{
-			if(Open){
+		} else {
+			if (Open) {
 				addCustomer(CustomerNr);
 				CustomerNr++;
 			}
-		CustomerNr++;
+			CustomerNr++;
 		}
-		}
-		
-			
 	}
-	
+
+	}
+
 	public boolean SpaceAvalible() {
 		if (CustomersInStore.size() == MaxCustomers) {
 			return false;
 		}
 		return true;
 	}
-	
+
 	public void SendToQueue(int Customer){ // det här borde vara ett event, Eftersom plock event är klart.
 		
 		if (ComstumerQueue.isEmpty() && LedigaKassor>0){// om kön är tom och det finns ledig kassa.
@@ -86,22 +84,21 @@ public class StoreState {
 			köat++ // antalet som stått i kön totalt
 			
 			}
-			
-		return;
-		
-		
-		
-	}
-	}
+
+	return;
+
+	}}
+
 	public UpdateTimeInQueue(float Time){//Varje gång kön ändras måste denna uppdateras, Innan kön har uppdaterats. Alltså vid plockhändelse och betalningshändelse.
 		TimeInQueue+=CustomersInQueue.size()*(Time-LastTime); 
 		LastTime=Time; // LastTime är senast kön blev uppdaterad.
 	}
+
 	public UpdateTimeInKassa(float Time){//Varje gång Kassorna uppdateras ändras måste denna uppdateras innan uppdateringen sker, med tiden som uppdateringen ska ske
 		TimeInQueue+=CustomersPaying.size()*(Time-LastTimePayed); 
 		LastTimePayed=Time; // LastTime är senast kön blev uppdaterad.
 	}
-	
+
 	/**
 	 * Returns the current amount of free registers
 	 * 
@@ -110,7 +107,7 @@ public class StoreState {
 	public int getFreeRegister() {
 		return this.LedigaKassor;
 	}
-	
+
 	/**
 	 * Changes the amount of free registers
 	 * 
@@ -119,15 +116,42 @@ public class StoreState {
 	public void changeFreeRegisters(int num) {
 		this.LedigaKassor += num;
 	}
-	
+
 	/**
 	 * Changes the amount of customers currently paying
 	 * 
 	 * @param num The amount to change by
 	 */
 	public void changeCustomersPaying(int num) {
-		this.CustomersPaying += num;
+		// Skrivit det såhär tills vi vet hur vi gör med arrays
+		CustomersPaying += num;
 	}
 
+	/**
+	 * Changes the customer currently doing an event
+	 * 
+	 * @param num The customer ID
+	 */
+	public void changeCurrentCustomer(int num) {
+		currCustom = 0;
+		currCustom += num;
+	}
+
+	/**
+	 * Changes the amount of customers currently picking items
+	 * 
+	 * @param num
+	 */
+	public void changeCustomersShopping(int num) {
+		// Skrivit det såhär tills vi vet hur vi gör med arrays
+		CustomersInStore += num;
+	}
+
+	/**
+	 * Changes the stores state to being closed
+	 */
+	public void closeStore() {
+		Open = false;
+	}
 
 }
