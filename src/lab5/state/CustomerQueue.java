@@ -29,4 +29,13 @@ public class CustomerQueue {
 	public void removeFirstInLine() {
 		customerQueue.remove(customerQueue.get(0));
 	}
+
+	/**
+	 * Returns the first customer in line
+	 * 
+	 * @return position 0 in array
+	 */
+	public int getFirstInLine() {
+		return customerQueue.get(0);
+	}
 }
