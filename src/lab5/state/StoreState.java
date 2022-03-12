@@ -102,7 +102,32 @@ public class StoreState {
 		LastTimePayed=Time; // LastTime är senast kön blev uppdaterad.
 	}
 	
+	/**
+	 * Returns the current amount of free registers
+	 * 
+	 * @return Free registers
+	 */
+	public int getFreeRegister() {
+			return LedigaKassor;
+		}
 	
+	/**
+	 * Changes the amount of free registers
+	 * 
+	 * @param num The amount to change by
+	 */
+	public void changeFreeRegisters(int num) {
+		this.LedigaKassor += num;
+	}
+	
+	/**
+	 * Changes the amount of customers currently paying
+	 * 
+	 * @param num The amount to change by
+	 */
+	public void changeCustomersPaying(int num) {
+		this.CustomersPaying += num;
+	}
 
 
 }
