@@ -108,8 +108,8 @@ public class StoreState {
 	 * @return Free registers
 	 */
 	public int getFreeRegister() {
-			return this.LedigaKassor;
-		}
+		return this.LedigaKassor;
+	}
 	
 	/**
 	 * Changes the amount of free registers
