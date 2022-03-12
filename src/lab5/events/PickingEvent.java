@@ -11,7 +11,7 @@ public class PickingEvent extends Event {
 	/**
 	 * The constructor
 	 * 
-	 * @param Tar in 
+	 * @param Tar in
 	 */
 	public PickingEvent(SimState state, EventQueue queue) {
 		super(state, queue);
