@@ -5,65 +5,66 @@ import java.util.ArrayList;
 import lab5.events.Event;
 import lab5.state.CreateCustomer.Customer;
 
+
+
 public class StoreState {
 
-	int LedigaKassor;
-	int Customers = 0; // borde det inte vara så här det ska stå, alla som är inne i affären, Fylls
+	private static int LedigaKassor;
+	private static int Customers = 0; // borde det inte vara så här det ska stå, alla som är inne i affären, Fylls
 						// alltid på med det minsta lediga positiva heltalet.
-						// CustomersPaying försvinner också den från customers, Då är en ny int ledig
-						// för nästa kund,
+							// CustomersPaying försvinner också den från customers, Då är en ny int ledig
+							// för nästa kund,
 
-	double currentTime = 0; // ändra från mainloop i simulation
-	double TimeInQueue = 0; // en Variabel som costumerQueue får ändra på.
+	static double currentTime = 0; // ändra från mainloop i simulation
+	private static double TimeInQueue = 0; // en Variabel som costumerQueue får ändra på.
 	double TimePlockTid = 0; //
-	double TimeInKassa = 0;
+	private static double TimeInKassa=0;
 	double LastTime = 0;
 	double LastTimePayed = 0;
-
+	
 	int MaxCustomers; // maximalt antal customers
-	int MissedCustomers = 0;
+	private static int MissedCustomers = 0;
 
 	int CustomerNr = 0;
-	int currCustom = 0; // Variabel som ändras när ett event körs för att veta vilken kund som gör
+	private static int currCustom = 0; // Variabel som ändras när ett event körs för att veta vilken kund som gör
 						// något. Skickas senare till view
-	int köat = 0;
-
-	String Name;
+	private static int köat = 0;
+	
+	private static String Name;
 	CustomerQueue Queue = new CustomerQueue();
-	public boolean Open = false; // Om det får komma in nya kunder.
+	public static boolean Open = false; // Om det får komma in nya kunder.
 
 	public StoreState(int AntalKassor, int maxKunder) {
 		// Constructor
-		LedigaKassor = AntalKassor;
+		setLedigaKassor(AntalKassor);
 		MaxCustomers = maxKunder;
 
 	}
-
+	
 	public int CustomerArrived() {
-		Customers++;
+		setCustomers(getCustomers() + 1);
 		return CustomerNr;
 	}
 
 	public boolean SpaceAvalible() {
-		CustomerNr++; // kundens nummer går upp med varje som försöker komma in. eller kommer in.
-		if (Customers > MaxCustomers) {
-			MissedCustomers++;
+		CustomerNr++; //kundens nummer går upp med varje som försöker komma in. eller kommer in.
+		if (getCustomers() > MaxCustomers) {
+			setMissedCustomers(getMissedCustomers() + 1);
 			return false;
 		}
-
+		
 		return true;
 	}
 
-	public void UpdateTimeInQueue() {// Varje gång kön ändras måste denna uppdateras, Innan kön har uppdaterats.
-										// Alltså vid plockhändelse och betalningshändelse.
-		TimeInQueue += CustomerQueue.getCustomerQueueLength() * (currentTime - LastTime);
-		LastTime = currentTime; // LastTime är senast kön blev uppdaterad.
+
+	public void UpdateTimeInQueue(){//Varje gång kön ändras måste denna uppdateras, Innan kön har uppdaterats. Alltså vid plockhändelse och betalningshändelse.
+		setTimeInQueue(getTimeInQueue() + CustomerQueue.getCustomerQueueLength()*(currentTime-LastTime)); 
+		LastTime=currentTime; // LastTime är senast kön blev uppdaterad.
 	}
 
-	public void UpdateTimeLedigaKassor() {// Varje gång Kassorna uppdateras ändras måste denna uppdateras innan
-											// uppdateringen sker, med tiden som uppdateringen ska ske
-		TimeInKassa += LedigaKassor * (currentTime - LastTimePayed);
-		LastTimePayed = currentTime; // LastTime är senast kön blev uppdaterad.
+	public void UpdateTimeLedigaKassor(){//Varje gång Kassorna uppdateras ändras måste denna uppdateras innan uppdateringen sker, med tiden som uppdateringen ska ske
+		setTimeInKassa(getTimeInKassa() + getLedigaKassor().size()*(currentTime-LastTimePayed)); 
+		LastTimePayed=currentTime; // LastTime är senast kön blev uppdaterad.
 	}
 
 	/**
@@ -72,7 +73,7 @@ public class StoreState {
 	 * @return Free registers
 	 */
 	public int getFreeRegister() {
-		return LedigaKassor;
+		return getLedigaKassor();
 	}
 
 	/**
@@ -81,7 +82,7 @@ public class StoreState {
 	 * @param num The amount to change by
 	 */
 	public void changeFreeRegisters(int num) {
-		LedigaKassor += num;
+		setLedigaKassor(getLedigaKassor() + num);
 	}
 
 	/**
@@ -100,8 +101,8 @@ public class StoreState {
 	 * @param num The customer ID
 	 */
 	public void changeCurrentCustomer(int num) {
-		currCustom = 0;
-		currCustom += num;
+		setCurrCustom(0);
+		setCurrCustom(getCurrCustom() + num);
 	}
 
 	/**
@@ -126,7 +127,7 @@ public class StoreState {
 	 * 
 	 * @return current time
 	 */
-	public double getCurrentTime() {
+	public static double getCurrentTime() {
 		return currentTime;
 	}
 
@@ -138,23 +139,72 @@ public class StoreState {
 	public boolean getShopOpen() {
 		return Open;
 	}
+	public void ChangeName(String NewName){
+		setName(NewName);
+	}
 
-	public void ChangeName(String NewName) {
-		Name = NewName;
+	public static int getLedigaKassor() {
+		return LedigaKassor;
 	}
-	/**
-	 * Removes a customer from the store
-	 */
-	public void customerRemove() {
-		Customers += -1;
+
+	public void setLedigaKassor(int ledigaKassor) {
+		LedigaKassor = ledigaKassor;
 	}
-	
-	/**
-	 * Changes the total amount 
-	 * 
-	 * @param num
-	 */
-	public void changeCustomersPayed(int num) {
-		customersPayed += num;
+
+	public static double getTimeInKassa() {
+		return TimeInKassa;
 	}
+
+	public void setTimeInKassa(double timeInKassa) {
+		TimeInKassa = timeInKassa;
+	}
+
+	public static int getCustomers() {
+		return Customers;
+	}
+
+	public void setCustomers(int customers) {
+		Customers = customers;
+	}
+
+	public static int getMissedCustomers() {
+		return MissedCustomers;
+	}
+
+	public void setMissedCustomers(int missedCustomers) {
+		MissedCustomers = missedCustomers;
+	}
+
+	public static int getKöat() {
+		return köat;
+	}
+
+	public void setKöat(int köat) {
+		this.köat = köat;
+	}
+
+	public static double getTimeInQueue() {
+		return TimeInQueue;
+	}
+
+	public void setTimeInQueue(double timeInQueue) {
+		TimeInQueue = timeInQueue;
+	}
+
+	public static String getName() {
+		return Name;
+	}
+
+	public void setName(String name) {
+		Name = name;
+	}
+
+	public static int getCurrCustom() {
+		return currCustom;
+	}
+
+	public void setCurrCustom(int currCustom) {
+		this.currCustom = currCustom;
+	}
+
 }
