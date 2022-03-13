@@ -3,7 +3,7 @@ package lab5.events;
 
 import lab5.state.*;
 
-public class PayingEvent extends Event2 {
+public class PayingEvent extends Event {
 
 	private StoreState sState;
 	private EventQueue eQueue;
