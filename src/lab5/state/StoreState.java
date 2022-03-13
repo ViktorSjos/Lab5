@@ -59,8 +59,8 @@ public class StoreState {
 		LastTime=Time; // LastTime är senast kön blev uppdaterad.
 	}
 
-	public UpdateTimeInKassa(float Time){//Varje gång Kassorna uppdateras ändras måste denna uppdateras innan uppdateringen sker, med tiden som uppdateringen ska ske
-		TimeInKassa+=CustomersPaying.size()*(Time-LastTimePayed); 
+	public UpdateTimeLedigaKassor(){//Varje gång Kassorna uppdateras ändras måste denna uppdateras innan uppdateringen sker, med tiden som uppdateringen ska ske
+		TimeInKassa+=LedigaKassor.size()*(Time-LastTimePayed); 
 		LastTimePayed=Time; // LastTime är senast kön blev uppdaterad.
 	}
 
