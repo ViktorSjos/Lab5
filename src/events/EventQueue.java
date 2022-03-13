@@ -1,7 +1,7 @@
-package lab5.events;
+package events;
 
 import java.util.ArrayList;
-import lab5.state.StoreState;
+import state.StoreState;
 
 public class EventQueue {
 	
