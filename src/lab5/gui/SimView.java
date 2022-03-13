@@ -1,5 +1,10 @@
 package lab5.gui;
 
+import lab5.events.Event;
+import lab5.events.EventQueue;
+import lab5.state.CustomerQueue;
+import lab5.state.StoreState;
+
 public class SimView {
 	
 	static int N;
@@ -28,11 +33,24 @@ public class SimView {
 		System.out.println("Förlopp");
 		System.out.println("=======");
 		System.out.println("Tid   Händelse   Kund   ?   led   ledT   I   $   :-(   köat   köT   köar   Kassakö");
-		for(int i = 0; i < EventQueue)	
 		
-		
+			
+		}
+	
+	public void printEvent() {
+		System.out.println(StoreState.getCurrentTime() + StoreState.getName() + StoreState.getCurrCustom() +  StoreState.Open 
+				+ StoreState.getLedigaKassor() + StoreState.getTimeInKassa() + 
+				StoreState.getCustomers() + StoreState.getMissedCustomers() + StoreState.getKöat() 
+				+ StoreState.getTimeInQueue() + CustomerQueue.getCustomerQueueLength()
+				+ CustomerQueue.customerQueue);
 		
 	}
+		
+	
+	
+		
+		
+	
 	
 	public static void main(String[] args) {
 		SimView();
