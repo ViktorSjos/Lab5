@@ -1,9 +1,9 @@
-package lab5.events;
+package events;
 
 import java.util.Timer;
-import lab5.state.CreateCustomer.Customer;
-import lab5.state.SimState;
-import lab5.state.StoreState;
+import state.CreateCustomer.Customer;
+import state.SimState;
+import state.StoreState;
 
 public class CustomerArrival extends Event{
 	
