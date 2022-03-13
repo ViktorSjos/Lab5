@@ -1,13 +1,12 @@
 package lab5;
 
-import java.util.Timer;
 
-import lab5.events.ClosingEvent;
-import lab5.events.EventQueue;
-import lab5.events.StartEvent;
-import lab5.events.StoppingEvent;
-import lab5.gui.StoreView;
-import lab5.state.StoreState;
+
+import events.ClosingEvent;
+import events.EventQueue;
+import events.StartEvent;
+import gui.StoreView;
+import state.StoreState;
 
 public class RunSim {
 //	//Simuleringsexempel 1
@@ -39,6 +38,7 @@ public class RunSim {
 	public static final int Registers = 2;
 	
 	public static final double Stop = 10;
+	public static final double Start = 999;
 	public static final long Seed = 5432;
 
 	/**
@@ -53,7 +53,7 @@ public class RunSim {
 		StoreState state = new StoreState(MaxCust,Registers);
 		StartEvent start = new StartEvent(state, queue);
 		ClosingEvent close = new ClosingEvent(state, queue, Stop);
-		StoppingEvent stop = new StoppingEvent(state, queue);
+		StopEvent stop = new StopEvent(state, queue);
 		new Simulation(queue, start, stop);
 	}
 }

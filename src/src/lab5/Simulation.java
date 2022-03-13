@@ -1,15 +1,18 @@
 package lab5;
 
-import java.util.Queue;
 
-import lab5.events.EventQueue;
-import lab5.events.StartEvent;
-import lab5.state.StoreState;
+
+import events.EventQueue;
+import events.StartEvent;
+import events.StoppingEvent;
+import state.StoreState;
 
 public class Simulation {
 	
-	public Simulation(EventQueue queue, StartEvent start, StopEvent stop) {
+	public Simulation(EventQueue queue, StartEvent start, StoppingEvent stop) {
 		queue.AddEvent(start);
+		queue.AddEvent(stop);
+		
 		run(queue);
 	}
 	
