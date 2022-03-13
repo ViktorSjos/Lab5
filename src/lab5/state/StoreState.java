@@ -16,16 +16,19 @@ public class StoreState {
 							// för nästa kund,
 
 	float currentTime = 0; // ändra från mainloop i simulation
+	float TimeInQueue = 0; // en Variabel som costumerQueue får ändra på.
+	float TimePlockTid = 0; //
+	float LastTime = 0;
+	float LastTimePayed = 0;
+	
 	int MaxCustomers; // maximalt antal customers
 	int MissedCustomers = 0;
-	int TimeInQueue = 0; // en Variabel som costumerQueue får ändra på.
-	int TimePlockTid = 0; //
-	int LastTime = 0;
-	int LastTimePayed = 0;
+
 	int CustomerNr = 0;
 	int currCustom = 0; // Variabel som ändras när ett event körs för att veta vilken kund som gör
 						// något. Skickas senare till view
 	int köat = 0;
+	CustomerQueue Queue = new CustomerQueue();
 	public boolean Open = false; // Om det får komma in nya kunder.
 
 	public StoreState(int AntalKassor, int maxKunder) {
@@ -49,28 +52,9 @@ public class StoreState {
 		return true;
 	}
 
-	public void SendToQueue(int Customer){ // det här borde vara ett event, Eftersom plock event är klart.
-		
-		if (ComstumerQueue.isEmpty() && LedigaKassor>0){// om kön är tom och det finns ledig kassa.
-				CustomersInStore.Remove(CustomersInStore.indexOf(Costumer)); //tar bort kunden från Instore och flyttar till en kassa
-				CustomersPaying.add(Costumer); //lägger till som betalande
-				LedigaKassor--;
-				return; //den här borde också skapa ett nytt event som är ett betalningsevent som också borde räkna ut en ny tid.
-				}
-			}else{// om alla kassor är upptagna ställer sig kunden i  kön.
-			CustomersInStore.Remove(CustomersInStore.indexOf(Costumer));
-			UpdateTimeInQueue();//varje gång köns tillstånd ändras måste denna köras.
-			CustomersInQueue.add(Customer); //så som jag gjort det nu behövs inte customerqueue...
-			köat++ // antalet som stått i kön totalt
-			
-			}
-
-	return;
-
-	}}
 
 	public UpdateTimeInQueue(float Time){//Varje gång kön ändras måste denna uppdateras, Innan kön har uppdaterats. Alltså vid plockhändelse och betalningshändelse.
-		TimeInQueue+=CustomersInQueue.size()*(Time-LastTime); 
+		TimeInQueue+=CustomerQueue.getCustomerQueueLength()*(Time-LastTime); 
 		LastTime=Time; // LastTime är senast kön blev uppdaterad.
 	}
 
