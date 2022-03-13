@@ -38,3 +38,50 @@ public class Event {
 	
 
 }
+
+/*package lab5.events;
+
+import lab5.state.*;
+
+public class Event2 {
+
+	public double currTime;
+	public String eventName;
+
+	/**
+	 * The constructor
+	 * 
+	 * @param time,  The time of the event
+	 * @param event, The name of the event
+	 */
+	public Event2(double time, String event) {
+		currTime = time;
+		eventName = event;
+	}
+
+	public void checkStop(SimState state) {
+		if (eventName == "StoppingEvent") {
+			state.stop();
+		}
+	}
+
+	/**
+	 * Gets the current time of the store
+	 * 
+	 * @return the current time
+	 */
+	public double getCurrentTime() {
+		return currTime;
+	}
+
+	/**
+	 * Gets the current event name
+	 * 
+	 * @return the event name
+	 */
+	public String getCurrentEventName() {
+		return eventName;
+	}
+
+}
+*/
