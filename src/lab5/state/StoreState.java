@@ -70,7 +70,7 @@ public class StoreState {
 	 * @return Free registers
 	 */
 	public int getFreeRegister() {
-		return this.LedigaKassor;
+		return LedigaKassor;
 	}
 
 	/**
@@ -79,7 +79,7 @@ public class StoreState {
 	 * @param num The amount to change by
 	 */
 	public void changeFreeRegisters(int num) {
-		this.LedigaKassor += num;
+		LedigaKassor += num;
 	}
 
 	/**
@@ -89,7 +89,7 @@ public class StoreState {
 	 */
 	public void changeCustomersPaying(int num) {
 		// Skrivit det såhär tills vi vet hur vi gör med arrays
-		CustomersPaying += num;
+		customPaying += num;
 	}
 
 	/**
@@ -109,7 +109,7 @@ public class StoreState {
 	 */
 	public void changeCustomersShopping(int num) {
 		// Skrivit det såhär tills vi vet hur vi gör med arrays
-		CustomersInStore += num;
+		customInStore += num;
 	}
 
 	/**
@@ -117,6 +117,24 @@ public class StoreState {
 	 */
 	public void closeStore() {
 		Open = false;
+	}
+
+	/**
+	 * Get the current time of the store
+	 * 
+	 * @return current time
+	 */
+	public double getCurrentTime() {
+		return currentTime;
+	}
+
+	/**
+	 * Checks if the store is open
+	 * 
+	 * @return Open state
+	 */
+	public boolean getShopOpen() {
+		return Open;
 	}
 
 }
