@@ -15,11 +15,11 @@ public class StoreState {
 							// CustomersPaying försvinner också den från customers, Då är en ny int ledig
 							// för nästa kund,
 
-	float currentTime = 0; // ändra från mainloop i simulation
-	float TimeInQueue = 0; // en Variabel som costumerQueue får ändra på.
-	float TimePlockTid = 0; //
-	float LastTime = 0;
-	float LastTimePayed = 0;
+	double currentTime = 0; // ändra från mainloop i simulation
+	double TimeInQueue = 0; // en Variabel som costumerQueue får ändra på.
+	double TimePlockTid = 0; //
+	double LastTime = 0;
+	double LastTimePayed = 0;
 	
 	int MaxCustomers; // maximalt antal customers
 	int MissedCustomers = 0;
