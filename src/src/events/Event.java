@@ -35,8 +35,11 @@ public class Event {
 		
 	}
 	
-	public String getCurrentEventName() {
-		return eventName;
+
+
+	public void Exectue() {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

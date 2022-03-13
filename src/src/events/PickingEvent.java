@@ -21,7 +21,7 @@ public class PickingEvent extends Event {
 		this.sState = sState;
 		this.eQueue = eQueue;
 		this.customer = customer;
-		ExTime = this.ExecutionTime(sState.GetCurrentTime() + Timer.timeToPay());
+		ExTime = sState.GetCurrentTime() + Timer.timeToPay();
 	}
 
 	/**
@@ -32,12 +32,11 @@ public class PickingEvent extends Event {
 		if (sState.getFreeRegister() > 0) {
 			sState.changeCurrentCustomer(this.customer);
 			Event paying = new PayingEvent(sState, eQueue, cQueue, sState.GetCurrentTime() + Timer.timeToPay());
-			sState.changeCustomersShopping(-1);
 			sState.changeFreeRegisters(-1);
 			sState.changeCustomersPaying(+1);
 			eQueue.AddEvent(paying);
 		} else {
-			cQueue.addToArray(id);
+			cQueue.addToArray(customer);
 		}
 	}
 }

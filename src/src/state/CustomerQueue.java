@@ -11,7 +11,6 @@ public class CustomerQueue {
 	 * @param customer id
 	 */
 	public void addToArray(int customer) {
-		StoreState.UpdateTimeInQueue();
 		customerQueue.add(customer);
 	}
 
@@ -28,7 +27,6 @@ public class CustomerQueue {
 	 * Removes the first customer in line
 	 */
 	public void removeFirstInLine() {
-		StoreState.UpdateTimeInQueue();
 		customerQueue.remove(customerQueue.get(0));
 	}
 

@@ -4,6 +4,7 @@ package events;
 
 import state.SimState;
 import state.StoreState;
+import state.Timer;
 
 public class CustomerArrival extends Event{
 	
@@ -18,7 +19,7 @@ public class CustomerArrival extends Event{
 		this.state = state;
 		this.queue = queue;
 		name = "Ankomst";
-		ExTime = this.ExecutionTime(state.GetCurrentTime()+Timer.timeToNextCustomer()); //calculate time
+		ExTime = state.GetCurrentTime()+Timer.timeToNextCustomer(); //calculate time
 	}
 	
 	public void Execute() {
