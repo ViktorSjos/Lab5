@@ -4,38 +4,40 @@ import java.util.Random;
 
 public class Timer {
 	
-	private Random rand;
 	private double lambda;
 	private double Picklower; 
 	private double Pickwidth;
 	private double Paylower; 
 	private double Paywidth;
-	  
+	
+	public Timer(double Lambda, double Picklower, double Pickwidth, double Paylower, double Paywidth) {
+	
+	this.lambda = Lambda;
+	this.Picklower = Picklower;
+	this.Pickwidth = Pickwidth;
+	this.Paylower = Paylower;
+	this.Paywidth = Paywidth;
+	}
 	
 	  
-	public double timeToNextCustomer(double lambda) {
+	public double timeToNextCustomer() {
 		rand = new Random();
-	    this.lambda = lambda;
 	  	return -Math.log(rand.nextDouble())/lambda;
 	}
 	
-	public double timeToPick(double lower, double upper) {
+	public double timeToPick() {
 		rand = new Random();
-	    this.Picklower = lower;
-	    this.Pickwidth = upper-lower;
 	    return Picklower+rand.nextDouble()*Pickwidth;
 	}
 	
-	public double timeToPay(double lower, double upper) {
+	public double timeToPay() {
 		rand = new Random();
-	    this.Paylower = lower;
-	    this.Paywidth = upper-lower;
 	    return Paylower+rand.nextDouble()*Paywidth;
 	}
 
 	
 	/*
-	 * Test funktion fÃ¶r tiderna
+	 * Test funktion för tiderna
 	 * 
 	public static void main(String[] args) {
 		Timer myapp = new Timer();
@@ -45,5 +47,3 @@ public class Timer {
 		System.out.println(myapp.timeToPay(0.5, 1.0));
 	}*/
 }
-		
-		
