@@ -1,16 +1,13 @@
 package lab5.events;
 
 import java.util.ArrayList;
+import lab5.state.StoreState;
 
 public class EventQueue {
 	
-	int Time = 0;
-	ArrayList<Event> Queue = new ArrayList<Event>();
-	ArrayList<Event> Temp = new ArrayList<Event>();
+	private ArrayList<Event> Queue = new ArrayList<Event>();
 	
 	public EventQueue(){
-		
-		
 		
 	}
 	
@@ -19,28 +16,37 @@ public class EventQueue {
 			Queue.add(Ev);
 			return;
 		}
-		for (int i = 0; i<=Queue.size(); i++) {
-			if (Ev.GetExecutionTime() <= Queue.get(i).GetExecutionTime()) {
-				Temp.add(Ev);
+		for (int i = -1; i<Queue.size(); i++) {
+			if (i+1 == Queue.size()) {
+				Queue.add(i+1,Ev);
+				break;
+			}
+			if (Ev.GetExecutionTime() >= Queue.get(i+1).GetExecutionTime()) {
 			}
 			else {
-				Temp.add(Queue.get(i));
+				Queue.add(i+1,Ev);
+				break;
 			}
-			Queue = Temp;
-			Temp.clear();
 		}
-		
 	}
 	
-	public void DoEvent(Object Event) { // kanske bara borde retunera eventet. 
-		Queue.get(0);
+	public void NextEvent() {
+		if (Queue.isEmpty()) {
+			return;
+		}
+		Queue.get(0).Exectue();
 		Queue.remove(0);
-		// if (Queue.isEmpty()==False){
-		// x = Queue.get(0);
-		// Queue.remove(0);
-		// return x.ExecuteEffect //borde gå att endast skicka metoden som har en effekt tillbaka. Då skickar vi allt vi behöver från event till simulation. 
-		// det borde fungera eftersom metoden inte längre behöver hämta information från eventklassen utan endast från state. (beroende på hur vi gör med customers osv.
-		//} else{return}
+	}
+	
+	public EventQueue GetQueue() {
+		return this;
+	}
+	
+	public boolean IsEmpty(){
+		if (Queue.isEmpty()) {
+			return true;
+		}
+		return false;
 	}
 
 }
