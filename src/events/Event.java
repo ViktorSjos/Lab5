@@ -1,8 +1,8 @@
-package lab5.events;
+package events;
 
 import java.awt.Taskbar.State;
 
-import lab5.state.*;
+import state.*;
 
 public class Event {
 	
