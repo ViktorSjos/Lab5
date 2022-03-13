@@ -142,5 +142,19 @@ public class StoreState {
 	public void ChangeName(String NewName) {
 		Name = NewName;
 	}
-
+	/**
+	 * Removes a customer from the store
+	 */
+	public void customerRemove() {
+		Customers += -1;
+	}
+	
+	/**
+	 * Changes the total amount 
+	 * 
+	 * @param num
+	 */
+	public void changeCustomersPayed(int num) {
+		customersPayed += num;
+	}
 }
