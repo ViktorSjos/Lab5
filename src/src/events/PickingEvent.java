@@ -16,22 +16,23 @@ public class PickingEvent extends Event {
 	 * 
 	 * @param Tar in
 	 */
-	public PickingEvent(StoreState sState, EventQueue eQueue, CustomerQueue cQueue,int customer) {
+	public PickingEvent(StoreState sState, EventQueue eQueue, int customer) {
 		super(sState, eQueue);
 		this.sState = sState;
 		this.eQueue = eQueue;
+		this.cQueue = sState.GetCQ();
 		this.customer = customer;
-		ExTime = sState.GetCurrentTime() + Timer.timeToPay();
+		ExTime = sState.GetCurrentTime() + sState.GetTimer().timeToPay();
 	}
 
 	/**
 	 * If there are free registers paying event gets sent to eventQueue, otherwise
 	 * send customer to CustomerQueue
 	 */
-	public void Execute() {
+	private void Execute() {
 		if (sState.getFreeRegister() > 0) {
 			sState.changeCurrentCustomer(this.customer);
-			Event paying = new PayingEvent(sState, eQueue, cQueue, customer);
+			Event paying = new PayingEvent(sState, eQueue, customer);
 			sState.changeFreeRegisters(-1);
 			sState.changeCustomersPaying(+1);
 			eQueue.AddEvent(paying);

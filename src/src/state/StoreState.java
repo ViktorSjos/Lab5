@@ -7,42 +7,51 @@ package state;
 
 public class StoreState extends SimState{
 
-	private static int LedigaKassor;
-	private static int Customers = 0; // borde det inte vara så här det ska stå, alla som är inne i affären, Fylls
+	private int LedigaKassor;
+	private int Customers = 0; // borde det inte vara så här det ska stå, alla som är inne i affären, Fylls
 						// alltid på med det minsta lediga positiva heltalet.
 							// CustomersPaying försvinner också den från customers, Då är en ny int ledig
 							// för nästa kund,
 
-	static double currentTime = 0; // ändra från mainloop i simulation
-	private static double TimeInQueue = 0; // en Variabel som costumerQueue får ändra på.
+	 double currentTime = 0; // ändra från mainloop i simulation
+	private double TimeInQueue = 0; // en Variabel som costumerQueue får ändra på.
 	double TimePlockTid = 0; //
-	private static double TimeInKassa=0;
+	private double TimeInKassa=0;
 	double LastTime = 0;
 	double LastTimePayed = 0;
 	int customPaying = 0;
 	
 	int MaxCustomers; // maximalt antal customers
-	private static int MissedCustomers = 0;
+	private int MissedCustomers = 0;
 
 	int CustomerNr = 0;
-	private static int currCustom = 0; // Variabel som ändras när ett event körs för att veta vilken kund som gör
+	private int currCustom = 0; // Variabel som ändras när ett event körs för att veta vilken kund som gör
 						// något. Skickas senare till view
-	private static int köat = 0;
+	private int köat = 0;
 	
-	private static String Name;
+	private String Name;
+	Timer timer;
 	CustomerQueue Queue = new CustomerQueue();
-	public static boolean Open = false; // Om det får komma in nya kunder.
+	public boolean Open = false; // Om det får komma in nya kunder.
 
-	public StoreState(int AntalKassor, int maxKunder) {
+	public StoreState(int AntalKassor, int maxKunder, CustomerQueue Que, Timer timer) {
 		// Constructor
 		LedigaKassor = AntalKassor;
 		MaxCustomers = maxKunder;
-
+		this.timer = timer;
 	}
 	
 	public int AddCustomer() {
 		CustomerNr++;
 		return CustomerNr-1;
+	}
+	
+	public Timer GetTimer() {
+		return timer;
+	}
+	
+	public CustomerQueue GetCQ(){
+		return Queue;
 	}
 
 	public boolean SpaceAvalible() {
@@ -57,12 +66,12 @@ public class StoreState extends SimState{
 
 
 	public void UpdateTimeInQueue(){//Varje gång kön ändras måste denna uppdateras, Innan kön har uppdaterats. Alltså vid plockhändelse och betalningshändelse.
-		setTimeInQueue(getTimeInQueue() + CustomerQueue.getCustomerQueueLength()*(currentTime-LastTime)); 
+		setTimeInQueue(getTimeInQueue() + Queue.getCustomerQueueLength()*(currentTime-LastTime)); 
 		LastTime=currentTime; // LastTime är senast kön blev uppdaterad.
 	}
 
 	public void UpdateTimeLedigaKassor(){//Varje gång Kassorna uppdateras ändras måste denna uppdateras innan uppdateringen sker, med tiden som uppdateringen ska ske
-		setTimeInKassa(getTimeInKassa() + getLedigaKassor().size()*(currentTime-LastTimePayed)); 
+		setTimeInKassa(getTimeInKassa() + getLedigaKassor()*(currentTime-LastTimePayed)); 
 		LastTimePayed=currentTime; // LastTime är senast kön blev uppdaterad.
 	}
 
@@ -138,7 +147,7 @@ public class StoreState extends SimState{
 		Name = NewName;
 	}
 
-	public static int getLedigaKassor() {
+	public  int getLedigaKassor() {
 		return LedigaKassor;
 	}
 
@@ -146,7 +155,7 @@ public class StoreState extends SimState{
 		LedigaKassor = ledigaKassor;
 	}
 
-	public static double getTimeInKassa() {
+	public  double getTimeInKassa() {
 		return TimeInKassa;
 	}
 
@@ -154,7 +163,7 @@ public class StoreState extends SimState{
 		TimeInKassa = timeInKassa;
 	}
 
-	public static int getCustomers() {
+	public  int getCustomers() {
 		return Customers;
 	}
 
@@ -162,7 +171,7 @@ public class StoreState extends SimState{
 		Customers = customers;
 	}
 
-	public static int getMissedCustomers() {
+	public  int getMissedCustomers() {
 		return MissedCustomers;
 	}
 
@@ -170,7 +179,7 @@ public class StoreState extends SimState{
 		MissedCustomers = missedCustomers;
 	}
 
-	public static int getKöat() {
+	public  int getKöat() {
 		return köat;
 	}
 
@@ -178,7 +187,7 @@ public class StoreState extends SimState{
 		this.köat = köat;
 	}
 
-	public static double getTimeInQueue() {
+	public  double getTimeInQueue() {
 		return TimeInQueue;
 	}
 
@@ -186,7 +195,7 @@ public class StoreState extends SimState{
 		TimeInQueue = timeInQueue;
 	}
 
-	public static String getName() {
+	public  String getName() {
 		return Name;
 	}
 
@@ -194,7 +203,7 @@ public class StoreState extends SimState{
 		Name = name;
 	}
 
-	public static int getCurrCustom() {
+	public  int getCurrCustom() {
 		return currCustom;
 	}
 

@@ -6,7 +6,9 @@ import events.ClosingEvent;
 import events.EventQueue;
 import events.StartEvent;
 import events.StoppingEvent;
+import gui.SimView;
 import gui.StoreView;
+import state.CustomerQueue;
 import state.StoreState;
 import state.Timer;
 
@@ -51,12 +53,13 @@ public class RunSim {
 	 */
 	public static void main(String[] args) {
 		EventQueue queue = new EventQueue();
+		CustomerQueue Cque = new CustomerQueue();
 		Timer timer = new Timer(Lambda,Picklower,Pickwidth,Paylower,Paywidth);
-		StoreState state = new StoreState(MaxCust,Registers);
+		StoreState state = new StoreState(MaxCust,Registers,Cque,timer);
+		//SimView view = new SimView(state);
 		StartEvent start = new StartEvent(state, queue);
-		StartEvent SimView = new SimView(state, queue);
 		ClosingEvent close = new ClosingEvent(state, queue, Stop);
 		StoppingEvent stop = new StoppingEvent(state, queue);
-		new Simulation(queue, start, stop);
+		Simulation sim = new Simulation(queue, start, stop);
 	}
 }

@@ -13,13 +13,14 @@ public class CustomerArrival extends Event{
 	String name;
 	StoreState state;
 	EventQueue queue;
+	
 
 	public CustomerArrival(StoreState state, EventQueue queue) {
 		super(state, queue);
 		this.state = state;
 		this.queue = queue;
 		name = "Ankomst";
-		ExTime = state.GetCurrentTime()+Timer.timeToNextCustomer(); //calculate time
+		ExTime = state.GetCurrentTime()+state.GetTimer().timeToNextCustomer(); //calculate time
 	}
 	
 	public void Execute() {
@@ -37,7 +38,7 @@ public class CustomerArrival extends Event{
 		//Create this customer
 		state.ChangeName(name);
 		this.Customer = state.AddCustomer();
-		PickingEvent pick = new PickingEvent(state, queue, this.Customer);
+		PickingEvent pick = new PickingEvent(state, queue, state.GetCQ() ,this.Customer);
 		queue.AddEvent(pick);
 		
 		//Add next cutomer

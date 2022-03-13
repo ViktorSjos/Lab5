@@ -22,6 +22,10 @@ public class CustomerQueue {
 	public int getCustomerQueueLength() {
 		return customerQueue.size();
 	}
+	
+	public ArrayList<Integer> GetCustomerQueue() {
+		return customerQueue;
+	}
 
 	/**
 	 * Removes the first customer in line
