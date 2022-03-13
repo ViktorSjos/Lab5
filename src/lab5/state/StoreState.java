@@ -5,14 +5,13 @@ import java.util.ArrayList;
 import lab5.events.Event;
 import lab5.state.CreateCustomer.Customer;
 
+
+
 public class StoreState {
 
 	int LedigaKassor;
-	int[] Customers; // borde det inte vara så här det ska stå, alla som är inne i affären, Fylls
+	int Customers = 0; // borde det inte vara så här det ska stå, alla som är inne i affären, Fylls
 						// alltid på med det minsta lediga positiva heltalet.
-	int[] CustomersInStore; // alla som plockar i affären
-	int[] CustomersInQueue; // alla som står i kö i affären, costumerQueue håller reda på ordningen.
-	int[] CustomersPaying; // alla som för tillfället håller på att betala ,när en person flyttas från
 							// CustomersPaying försvinner också den från customers, Då är en ny int ledig
 							// för nästa kund,
 
@@ -21,15 +20,11 @@ public class StoreState {
 	int MissedCustomers = 0;
 	int TimeInQueue = 0; // en Variabel som costumerQueue får ändra på.
 	int TimePlockTid = 0; //
-
 	int LastTime = 0;
 	int LastTimePayed = 0;
-
 	int CustomerNr = 0;
-
 	int currCustom = 0; // Variabel som ändras när ett event körs för att veta vilken kund som gör
 						// något. Skickas senare till view
-
 	int köat = 0;
 	public boolean Open = false; // Om det får komma in nya kunder.
 
@@ -39,33 +34,18 @@ public class StoreState {
 		MaxCustomers = maxKunder;
 
 	}
-
-	public void AddCustomer(int CustomerNr) {
-		CustomersInStore.add(CustomerNr);
-		Customer.add(CustomerNr);
-		// Skapa Plockevent !!!
-
-	}
-
+	
 	public void CustomerArrived() { // Lägg till event får köra den här
-		if (CustomerInStore >= MaxCustomers && Open == true) {
-			MissedCustomers++;
-			CustomerNr++;
-		} else {
-			if (Open) {
-				addCustomer(CustomerNr);
-				CustomerNr++;
-			}
-			CustomerNr++;
-		}
-	}
-
+		Customers++;
 	}
 
 	public boolean SpaceAvalible() {
-		if (CustomersInStore.size() == MaxCustomers) {
+		CustomerNr++; //kundens nummer går upp med varje som försöker komma in. eller kommer in.
+		if (Customers > MaxCustomers) {
+			MissedCustomers++;
 			return false;
 		}
+		
 		return true;
 	}
 
