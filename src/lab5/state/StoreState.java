@@ -38,8 +38,9 @@ public class StoreState {
 
 	}
 	
-	public void CustomerArrived() { // Lägg till event får köra den här
+	public int CustomerArrived() {
 		Customers++;
+		return Customers;
 	}
 
 	public boolean SpaceAvalible() {
