@@ -28,7 +28,7 @@ public class PickingEvent extends Event {
 	 * If there are free registers paying event gets sent to eventQueue, otherwise
 	 * send customer to CustomerQueue
 	 */
-	private void Execute() {
+	public void Execute() {
 		if (sState.getFreeRegister() > 0) {
 			sState.changeCurrentCustomer(this.customer);
 			Event paying = new PayingEvent(sState, eQueue, cQueue, customer);
