@@ -2,7 +2,7 @@ package lab5.events;
 
 import lab5.state.*;
 
-public class ClosingEvent extends Event2 {
+public class ClosingEvent extends Event {
 	private StoreState sState;
 
 	public ClosingEvent(StoreState sState, EventQueue queue, CustomerQueue cQueue, double time) {
