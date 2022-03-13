@@ -7,14 +7,15 @@ public class PickingEvent extends Event {
 	private StoreState sState;
 	private EventQueue eQueue;
 	private CustomerQueue cQueue;
-
+	int customer
 	/**
 	 * The constructor
 	 * 
 	 * @param Tar in
 	 */
-	public PickingEvent(SimState state, EventQueue queue) {
+	public PickingEvent(SimState state, EventQueue queue, int Customer) {//när vi skapar eventet säger vi också vilken kund det är som gör saken.
 		super(state, queue);
+		this.customer=Customer
 	}
 
 	/**
