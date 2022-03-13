@@ -1,6 +1,6 @@
-package lab5.events;
+package events;
 
-import lab5.state.*;
+import state.*;
 
 public class PickingEvent extends Event {
 
