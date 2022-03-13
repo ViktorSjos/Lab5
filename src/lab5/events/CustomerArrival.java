@@ -21,10 +21,10 @@ public class CustomerArrival extends Event{
 		if(!state.RunCheck()) {
 			return;
 		}
-		if(!storeState.SpaceAvalible()) {
+		if(!storeState.SpaceAvalible()) { //SpaceAvalible ökar missed customers om den retunerar false.
 			return;
 		}
-		storeState.CustomerArrived(customer);
+		storeState.CustomerArrived();  // den här ökar bara antalet kunder i affären nu.
 		
 	}
 	
