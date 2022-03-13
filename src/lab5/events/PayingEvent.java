@@ -16,7 +16,7 @@ public class PayingEvent extends Event {
 		this.sState = sState;
 		this.eQueue = eQueue;
 		this.cQueue = cQueue;
-		ExTime = this.ExecutionTime(state.getCurrentTime+Timer.timeToPick());
+		ExTime = this.ExecutionTime(state.getCurrentTime+Timer.timeToPay());
 	}
 
 	/**
