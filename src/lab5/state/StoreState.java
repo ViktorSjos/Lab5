@@ -40,7 +40,7 @@ public class StoreState {
 	
 	public int CustomerArrived() {
 		Customers++;
-		return Customers;
+		return CustomerNr;
 	}
 
 	public boolean SpaceAvalible() {
