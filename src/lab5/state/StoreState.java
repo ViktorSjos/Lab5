@@ -18,6 +18,7 @@ public class StoreState {
 	double currentTime = 0; // ändra från mainloop i simulation
 	double TimeInQueue = 0; // en Variabel som costumerQueue får ändra på.
 	double TimePlockTid = 0; //
+	double TimeInKassa=0;
 	double LastTime = 0;
 	double LastTimePayed = 0;
 	
