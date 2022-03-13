@@ -1,4 +1,4 @@
-package lab5.events;
+package events;
 
 import lab5.state.CreateCustomer.Customer;
 import lab5.state.SimState;
