@@ -6,11 +6,11 @@ import lab5.state.*;
 
 public class Event {
 	
-	private SimState state;
+	private StoreState state;
 	private EventQueue queue;
 	private int ExTime;
 
-	public Event(SimState state, EventQueue queue) {
+	public Event(StoreState state, EventQueue queue) {
 		this.state = state;
 		this.queue = queue;
 	}
