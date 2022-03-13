@@ -30,7 +30,7 @@ public class PayingEvent extends Event {
 		sState.changeFreeRegisters(1);
 
 		if (cQueue.getCustomerQueueLength() > 0) {
-			Event paying = new PayingEvent(sState, eQueue, cQueue.getFirstInLine(), Customer);
+			Event paying = new PayingEvent(sState, eQueue, cQueue, cQueue.getFirstInLine());
 			sState.changeFreeRegisters(-1);
 			sState.changeCustomersPaying(+1);
 			eQueue.AddEvent(paying);
