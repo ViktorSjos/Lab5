@@ -1,7 +1,4 @@
-
 package events;
-
-import java.util.Timer;
 
 import state.*;
 
@@ -13,27 +10,27 @@ public class PayingEvent extends Event {
 	private int Customer;
 	private double ExTime;
 
-	public PayingEvent(StoreState sState, EventQueue eQueue, CustomerQueue cQueue, double time) {
+	public PayingEvent(StoreState sState, EventQueue eQueue, int customer) {
 		super(sState, eQueue);
 		this.sState = sState;
 		this.eQueue = eQueue;
-		this.cQueue = cQueue;
-		ExTime = this.ExecutionTime(sState.getCurrentTime() + Timer.timeToPay());
+		this.cQueue = sState.GetCQ();
+		ExTime = sState.GetCurrentTime() + sState.GetTimer().timeToPay();
 	}
 
 	/**
 	 * Runs the event
 	 */
-	public void ExecuteEvent() {
+	public void Execute() {
+		sState.CurrentTime(this.ExTime);
 		sState.changeCurrentCustomer(Customer);
-		sState.changeName("Paying");
+		sState.ChangeName("Paying");
 		sState.changeCustomersPaying(-1);
 		sState.UpdateTimeLedigaKassor();
 		sState.changeFreeRegisters(1);
 
 		if (cQueue.getCustomerQueueLength() > 0) {
-			Event paying = new PayingEvent(sState, eQueue, cQueue.getFirstInLine(), Customer, ExTime);
-			sState.changeCustomersShopping(-1);
+			Event paying = new PayingEvent(sState, eQueue, cQueue.getFirstInLine());
 			sState.changeFreeRegisters(-1);
 			sState.changeCustomersPaying(+1);
 			eQueue.AddEvent(paying);

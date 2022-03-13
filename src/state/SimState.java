@@ -1,4 +1,4 @@
-package lab5.state;
+package state;
 
 public class SimState {
 	
@@ -11,6 +11,10 @@ public class SimState {
 	
 	public void StartSim() {
 		Running = true;
+	}
+	
+	public void StopSim() {
+		Running = false;
 	}
 	
 	public boolean RunCheck() {

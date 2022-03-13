@@ -1,13 +1,16 @@
+
 package events;
 
 import state.*;
 
 public class ClosingEvent extends Event {
 	private StoreState sState;
+	private double ExTime;
 
-	public ClosingEvent(StoreState sState, EventQueue queue, CustomerQueue cQueue, double time) {
-		super(time, "Closing");
+	public ClosingEvent(StoreState sState, EventQueue queue, double time) {
+		super(sState, queue);
 		this.sState = sState;
+		ExTime = time;
 	}
 
 	/**

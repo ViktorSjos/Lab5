@@ -1,4 +1,4 @@
-package lab5.gui;
+package gui;
 
 public class StoreView {
 

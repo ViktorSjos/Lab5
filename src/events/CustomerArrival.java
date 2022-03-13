@@ -1,9 +1,10 @@
 package events;
 
-import java.util.Timer;
-import state.CreateCustomer.Customer;
+
+
 import state.SimState;
 import state.StoreState;
+import state.Timer;
 
 public class CustomerArrival extends Event{
 	
@@ -12,17 +13,18 @@ public class CustomerArrival extends Event{
 	String name;
 	StoreState state;
 	EventQueue queue;
+	
 
 	public CustomerArrival(StoreState state, EventQueue queue) {
 		super(state, queue);
 		this.state = state;
 		this.queue = queue;
 		name = "Ankomst";
-		ExTime = this.ExecutionTime(state.getCurrentTime+Timer.timeToNextCustomer()); //calculate time
+		ExTime = state.GetCurrentTime()+state.GetTimer().timeToNextCustomer(); //calculate time
 	}
 	
 	public void Execute() {
-		StoreState.CurrentTime() = this.ExTime;
+		state.CurrentTime(this.ExTime);
 		
 		//SEND CUTOMER ARRIVED TO VIEW
 		
@@ -34,9 +36,10 @@ public class CustomerArrival extends Event{
 			return;
 		}
 		//Create this customer
+		state.ChangeName(name);
 		this.Customer = state.AddCustomer();
-		view(ExTime, name, this.Customer);
-		queue.AddEvent(PlockEvent(state, queue, this.Customer));
+		PickingEvent pick = new PickingEvent(state, queue, state.GetCQ() ,this.Customer);
+		queue.AddEvent(pick);
 		
 		//Add next cutomer
 		CustomerArrival FirstCustomer = new CustomerArrival(state, queue);
