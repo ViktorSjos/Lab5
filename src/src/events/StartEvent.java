@@ -1,29 +1,28 @@
 package events;
 
-
 import state.SimState;
 import state.StoreState;
 
-public class StartEvent extends Event{
-	
+public class StartEvent extends Event {
+
 	StoreState state;
 	EventQueue queue;
+	SimState simState;
 
 	public StartEvent(StoreState state, EventQueue queue) {
 		super(state, queue);
-		
+
 		this.ExecutionTime(0);
 
-		//SEND STORE OPENED TO VIEW
-	}
-	
-	public void Execute() {
-		
-		state.StartSim();
-		CustomerArrival FirstCustomer = new CustomerArrival(state,queue);
-		queue.AddEvent(FirstCustomer);
-		
+		// SEND STORE OPENED TO VIEW
 	}
 
+	public void Execute() {
+
+		simState.StartSim();
+		CustomerArrival FirstCustomer = new CustomerArrival(state, queue);
+		queue.AddEvent(FirstCustomer);
+
+	}
 
 }
