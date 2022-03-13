@@ -6,12 +6,12 @@ import lab5.state.StoreState;
 
 public class CustomerArrival extends Event{
 	
-	Customer customer;
+	int customer;
 	StoreState storeState;
 
-	public CustomerArrival(SimState state, EventQueue queue, Customer customer) {
+	public CustomerArrival(SimState state, EventQueue queue, int Customer) {
 		super(state, queue);
-		this.customer = customer;
+		this.customer = Customer;
 		this.ExecutionTime(100); //calculate time
 	}
 	
