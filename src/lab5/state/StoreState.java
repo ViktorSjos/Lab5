@@ -28,6 +28,8 @@ public class StoreState {
 	int currCustom = 0; // Variabel som ändras när ett event körs för att veta vilken kund som gör
 						// något. Skickas senare till view
 	int köat = 0;
+	
+	String Name;
 	CustomerQueue Queue = new CustomerQueue();
 	public boolean Open = false; // Om det får komma in nya kunder.
 
@@ -135,6 +137,9 @@ public class StoreState {
 	 */
 	public boolean getShopOpen() {
 		return Open;
+	}
+	public void ChangeName(String NewName){
+		Name=NewName;
 	}
 
 }
