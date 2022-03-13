@@ -7,9 +7,11 @@ public class PayingEvent extends Event {
 	private StoreState sState;
 	private EventQueue eQueue;
 	private CustomerQueue cQueue;
+	int Customer
 
-	public PayingEvent(SimState state, EventQueue queue) {
+	public PayingEvent(SimState state, EventQueue queue,int customer) {
 		super(state, queue);
+		this.customer=Customer
 	}
 
 	/**
@@ -18,7 +20,7 @@ public class PayingEvent extends Event {
 	 * 
 	 */
 	public void runEvent() {
-		sState.changeCurrentCustomer(id);
+		sState.changeCurrentCustomer(id); // id ligger nu lagrat i event. 
 		sState.changeCustomersPaying(-1);
 		sState.changeFreeRegisters(1);
 
@@ -31,7 +33,7 @@ public class PayingEvent extends Event {
 			eQueue.AddEvent(paying);
 			cQueue.removeFirstInLine();
 		}
-		if (CurrentTime >= 10 && sState.Open == true) {
+		if (CurrentTime >= 10 && sState.Open == true) { // closingevent borde väl skapas i början av allt?
 			// Behöver ha några andra parametrar
 			Event closed = new ClosingEvent(state, eQueue);
 		}
