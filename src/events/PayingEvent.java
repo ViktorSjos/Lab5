@@ -1,9 +1,9 @@
 
-package lab5.events;
+package events;
 
 import java.util.Timer;
 
-import lab5.state.*;
+import state.*;
 
 public class PayingEvent extends Event {
 
