@@ -9,12 +9,14 @@ public class PayingEvent extends Event {
 	private EventQueue eQueue;
 	private CustomerQueue cQueue;
 	private Customer customer;
+	private double ExTime;
 
-	public PayingEvent(StoreState sState, EventQueue eQueue, CustomerQueue cQueue, double time) {
+	public PayingEvent(StoreState sState, EventQueue eQueue, CustomerQueue cQueue) {
 		super(time, "Paying");
 		this.sState = sState;
 		this.eQueue = eQueue;
 		this.cQueue = cQueue;
+		ExTime = this.ExecutionTime(state.getCurrentTime+Timer.timeToPick());
 	}
 
 	/**
