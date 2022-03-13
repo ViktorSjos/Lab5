@@ -2,20 +2,24 @@ package lab5.events;
 
 import lab5.state.*;
 
-public class PickingEvent extends Event {
+public class PickingEvent extends Event2 {
 
 	private StoreState sState;
 	private EventQueue eQueue;
 	private CustomerQueue cQueue;
-	int customer
+	private CreateCustomer customer;
+
 	/**
 	 * The constructor
 	 * 
 	 * @param Tar in
 	 */
-	public PickingEvent(SimState state, EventQueue queue, int Customer) {//när vi skapar eventet säger vi också vilken kund det är som gör saken.
-		super(state, queue);
-		this.customer=Customer
+	public PickingEvent(StoreState sState, EventQueue eQueue, CustomerQueue cQueue, CreateCustomer customer, double time) {
+		super(time, "Picking");
+		this.sState = sState;
+		this.eQueue = eQueue;
+		this.cQueue = cQueue;
+		this.customer = customer;
 	}
 
 	/**
@@ -24,8 +28,8 @@ public class PickingEvent extends Event {
 	 */
 	private void runEvent() {
 		if (sState.getFreeRegister() > 0) {
-			sState.changeCurrentCustomer(id);
-			Event paying = new PayingEvent(Timer.timeToPay());
+			sState.changeCurrentCustomer(customer.GetId);
+			Event2 paying = new PayingEvent(sState, eQueue, cQueue, sState.getCurrentTime() + Timer.timeToPay());
 			sState.changeCustomersShopping(-1);
 			sState.changeFreeRegisters(-1);
 			sState.changeCustomersPaying(+1);
