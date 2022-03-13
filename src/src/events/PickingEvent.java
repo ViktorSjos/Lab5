@@ -16,7 +16,7 @@ public class PickingEvent extends Event {
 	 * 
 	 * @param Tar in
 	 */
-	public PickingEvent(StoreState sState, EventQueue eQueue, int customer) {
+	public PickingEvent(StoreState sState, EventQueue eQueue, CustomerQueue cQueue,int customer) {
 		super(sState, eQueue);
 		this.sState = sState;
 		this.eQueue = eQueue;
@@ -31,7 +31,7 @@ public class PickingEvent extends Event {
 	private void Execute() {
 		if (sState.getFreeRegister() > 0) {
 			sState.changeCurrentCustomer(this.customer);
-			Event paying = new PayingEvent(sState, eQueue, cQueue, sState.GetCurrentTime() + Timer.timeToPay());
+			Event paying = new PayingEvent(sState, eQueue, cQueue, customer);
 			sState.changeFreeRegisters(-1);
 			sState.changeCustomersPaying(+1);
 			eQueue.AddEvent(paying);
