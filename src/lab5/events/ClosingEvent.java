@@ -13,7 +13,7 @@ public class ClosingEvent extends Event2 {
 	/**
 	 * Runs the event
 	 */
-	public void runEvent() {
+	public void ExecuteEvent() {
 		sState.closeStore();
 	}
 
