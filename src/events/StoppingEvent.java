@@ -1,5 +1,5 @@
 
-package lab5.events;
+package events;
 
 public class StoppingEvent extends Event {
 
