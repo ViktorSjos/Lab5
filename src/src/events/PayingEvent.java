@@ -10,7 +10,7 @@ public class PayingEvent extends Event {
 	private int Customer;
 	private double ExTime;
 
-	public PayingEvent(StoreState sState, EventQueue eQueue, CustomerQueue cQueue) {
+	public PayingEvent(StoreState sState, EventQueue eQueue, CustomerQueue cQueue, int customer) {
 		super(sState, eQueue);
 		this.sState = sState;
 		this.eQueue = eQueue;
