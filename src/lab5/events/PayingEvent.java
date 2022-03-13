@@ -22,7 +22,7 @@ public class PayingEvent extends Event {
 	/**
 	 * Runs the event
 	 */
-	public void ExecuteEvent() {
+	public void Execute() {
 		sState.changeCurrentCustomer(id);
 		sState.changeCustomersPaying(-1);
 		sState.changeFreeRegisters(1);
