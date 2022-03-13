@@ -34,6 +34,7 @@ public class PayingEvent extends Event {
 			sState.changeFreeRegisters(-1);
 			sState.changeCustomersPaying(+1);
 			eQueue.AddEvent(paying);
+			StoreState.UpdateTimeInQueue(); 
 			cQueue.removeFirstInLine();
 		}
 	}
