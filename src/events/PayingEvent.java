@@ -14,7 +14,6 @@ public class PayingEvent extends Event {
 		super(sState, eQueue);
 		this.sState = sState;
 		this.eQueue = eQueue;
-		this.cQueue = sState.GetCQ();
 		ExTime = sState.GetCurrentTime() + sState.GetTimer().timeToPay();
 	}
 
@@ -25,14 +24,13 @@ public class PayingEvent extends Event {
 		sState.CurrentTime(this.ExTime);
 		sState.changeCurrentCustomer(Customer);
 		sState.ChangeName("Paying");
-		sState.changeCustomersPaying(-1);
 		sState.UpdateTimeLedigaKassor();
 		sState.changeFreeRegisters(1);
+		sState.RemoveCustomer();
 
 		if (cQueue.getCustomerQueueLength() > 0) {
 			Event paying = new PayingEvent(sState, eQueue, cQueue.getFirstInLine());
 			sState.changeFreeRegisters(-1);
-			sState.changeCustomersPaying(+1);
 			eQueue.AddEvent(paying);
 			cQueue.removeFirstInLine();
 		}

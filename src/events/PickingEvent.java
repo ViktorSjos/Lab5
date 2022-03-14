@@ -29,15 +29,20 @@ public class PickingEvent extends Event {
 	 * If there are free registers paying event gets sent to eventQueue, otherwise
 	 * send customer to CustomerQueue
 	 */
-	private void Execute() {
+	public void Execute() {
+		
+		sState.CurrentTime(this.ExTime);
+		sState.ChangeName("Picking");
 		if (sState.getFreeRegister() > 0) {
 			sState.changeCurrentCustomer(this.customer);
-			Event paying = new PayingEvent(sState, eQueue, customer);
+			Event paying = new PayingEvent(sState, eQueue, this.customer);
 			sState.changeFreeRegisters(-1);
-			sState.changeCustomersPaying(+1);
 			eQueue.AddEvent(paying);
 		} else {
-			cQueue.addToArray(customer);
+			cQueue.addToArray(this.customer);
 		}
+	}
+	public double GetExecutionTime() {
+		return this.ExTime;
 	}
 }

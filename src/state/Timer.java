@@ -23,17 +23,19 @@ public class Timer {
 
     public double timeToNextCustomer() {
         rand = new Random();
+        System.out.println("TEST CUSTOMER");
+        System.out.println(-Math.log(rand.nextDouble())/lambda);
           return -Math.log(rand.nextDouble())/lambda;
     }
 
     public double timeToPick() {
         rand = new Random();
-        return Picklower+rand.nextDouble()*Pickwidth;
+        return -Math.log(rand.nextDouble())/lambda;
     }
 
     public double timeToPay() {
         rand = new Random();
-        return Paylower+rand.nextDouble()*Paywidth;
+        return -Math.log(rand.nextDouble())/lambda;
     }
 
 

@@ -34,20 +34,33 @@ public class StoreState extends SimState{
 	CustomerQueue Queue = new CustomerQueue();
 	public boolean Open = false; // Om det får komma in nya kunder.
 
-	public StoreState(int AntalKassor, int maxKunder, CustomerQueue Que, Timer timer) {
+	public StoreState(int maxKunder, int AntalKassor, CustomerQueue Que, Timer timer) {
 		// Constructor
-		LedigaKassor = AntalKassor;
-		MaxCustomers = maxKunder;
+		this.LedigaKassor = AntalKassor;
+		this.MaxCustomers = maxKunder;
 		this.timer = timer;
 	}
 	
 	public int AddCustomer() {
 		CustomerNr++;
+		Customers++;
 		return CustomerNr-1;
 	}
 	
+	public void RemoveCustomer() {
+		Customers--;
+	}
+	
+	public boolean OpenCheck(){
+		return Open;
+	}
+	
+	public void OpenSet(){
+		Open = true;
+	}
+	
 	public Timer GetTimer() {
-		return timer;
+		return this.timer;
 	}
 	
 	public CustomerQueue GetCQ(){
@@ -55,22 +68,28 @@ public class StoreState extends SimState{
 	}
 
 	public boolean SpaceAvalible() {
-		CustomerNr++; //kundens nummer går upp med varje som försöker komma in. eller kommer in.
-		if (getCustomers() > MaxCustomers) {
+		 //kundens nummer går upp med varje som försöker komma in. eller kommer in.
+		if (Customers >= MaxCustomers) {
 			setMissedCustomers(getMissedCustomers() + 1);
 			return false;
 		}
 		
 		return true;
 	}
+	
+	public StoreState GetState() {
+		return this;
+	}
 
 
 	public void UpdateTimeInQueue(){//Varje gång kön ändras måste denna uppdateras, Innan kön har uppdaterats. Alltså vid plockhändelse och betalningshändelse.
+		System.out.println("UPDATE TIME");
 		setTimeInQueue(getTimeInQueue() + Queue.getCustomerQueueLength()*(currentTime-LastTime)); 
 		LastTime=currentTime; // LastTime är senast kön blev uppdaterad.
 	}
 
 	public void UpdateTimeLedigaKassor(){//Varje gång Kassorna uppdateras ändras måste denna uppdateras innan uppdateringen sker, med tiden som uppdateringen ska ske
+		System.out.println("UPDATE TIME");
 		setTimeInKassa(getTimeInKassa() + getLedigaKassor()*(currentTime-LastTimePayed)); 
 		LastTimePayed=currentTime; // LastTime är senast kön blev uppdaterad.
 	}
@@ -81,7 +100,7 @@ public class StoreState extends SimState{
 	 * @return Free registers
 	 */
 	public int getFreeRegister() {
-		return getLedigaKassor();
+		return LedigaKassor;
 	}
 
 	/**
@@ -90,7 +109,7 @@ public class StoreState extends SimState{
 	 * @param num The amount to change by
 	 */
 	public void changeFreeRegisters(int num) {
-		setLedigaKassor(getLedigaKassor() + num);
+		LedigaKassor+=num;
 	}
 
 	/**
@@ -113,6 +132,18 @@ public class StoreState extends SimState{
 		setCurrCustom(getCurrCustom() + num);
 	}
 
+	public void StartSim() {
+		Running = true;
+	}
+	
+	public void StopSim() {
+		Running = false;
+	}
+	
+	public boolean RunCheck() {
+		return Running;
+		
+	}
 
 
 	/**
@@ -147,12 +178,8 @@ public class StoreState extends SimState{
 		Name = NewName;
 	}
 
-	public  int getLedigaKassor() {
+	public int getLedigaKassor() {
 		return LedigaKassor;
-	}
-
-	public void setLedigaKassor(int ledigaKassor) {
-		LedigaKassor = ledigaKassor;
 	}
 
 	public  double getTimeInKassa() {

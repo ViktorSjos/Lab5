@@ -15,6 +15,8 @@ public class SimState {
 	
 	public void StopSim() {
 		Running = false;
+		System.out.println("STOOOP");
+		return;
 	}
 	
 	public boolean RunCheck() {

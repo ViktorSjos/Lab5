@@ -34,10 +34,8 @@ public class Event {
 	public void ExectueEffect(SimState state) {
 		
 	}
-	
 
-
-	public void Exectue() {
+	public void Execute() {
 		// TODO Auto-generated method stub
 		
 	}

@@ -31,7 +31,7 @@ public class CustomerQueue {
 	 * Removes the first customer in line
 	 */
 	public void removeFirstInLine() {
-		customerQueue.remove(customerQueue.get(0));
+		customerQueue.remove(0);
 	}
 
 	/**

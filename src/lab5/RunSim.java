@@ -41,7 +41,7 @@ public class RunSim {
 	public static final double Lambda = 3.0;
 	public static final int Registers = 2;
 	
-	public static final double Stop = 10;
+	public static final double Stop = 200;
 	public static final double Start = 999;
 	public static final long Seed = 5432;
 
@@ -52,14 +52,15 @@ public class RunSim {
 	 * @param args
 	 */
 	public static void main(String[] args) {
+		
 		EventQueue queue = new EventQueue();
 		CustomerQueue Cque = new CustomerQueue();
 		Timer timer = new Timer(Lambda,Picklower,Pickwidth,Paylower,Paywidth);
 		StoreState state = new StoreState(MaxCust,Registers,Cque,timer);
-		//SimView view = new SimView(state);
+		SimView view = new SimView(state,Lambda,Picklower,Pickwidth,Paylower,Paywidth,Registers,MaxCust);
 		StartEvent start = new StartEvent(state, queue);
 		ClosingEvent close = new ClosingEvent(state, queue, Stop);
 		StoppingEvent stop = new StoppingEvent(state, queue);
-		Simulation sim = new Simulation(queue, start, stop);
+		Simulation sim = new Simulation(queue, start, stop, view, state,close);
 	}
 }

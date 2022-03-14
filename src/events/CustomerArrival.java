@@ -20,10 +20,12 @@ public class CustomerArrival extends Event{
 		this.state = state;
 		this.queue = queue;
 		name = "Ankomst";
+		
 		ExTime = state.GetCurrentTime()+state.GetTimer().timeToNextCustomer(); //calculate time
 	}
 	
 	public void Execute() {
+		System.out.println("TEST CUSTOMER");
 		state.CurrentTime(this.ExTime);
 		
 		//SEND CUTOMER ARRIVED TO VIEW
@@ -35,10 +37,14 @@ public class CustomerArrival extends Event{
 			//CALL FUNTION
 			return;
 		}
+		if(!state.OpenCheck()) {
+			return;
+		}
 		//Create this customer
 		state.ChangeName(name);
 		this.Customer = state.AddCustomer();
-		PickingEvent pick = new PickingEvent(state, queue, state.GetCQ() ,this.Customer);
+		state.setCurrCustom(this.Customer);
+		PickingEvent pick = new PickingEvent(state, queue,this.Customer);
 		queue.AddEvent(pick);
 		
 		//Add next cutomer
@@ -48,6 +54,9 @@ public class CustomerArrival extends Event{
 		
 		
 		
+	}
+	public double GetExecutionTime() {
+		return this.ExTime;
 	}
 	
 	

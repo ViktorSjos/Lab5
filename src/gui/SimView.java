@@ -1,5 +1,7 @@
 package gui;
 
+import java.util.Random;
+
 import events.Event;
 import events.EventQueue;
 import state.CustomerQueue;
@@ -7,19 +9,23 @@ import state.StoreState;
 
 public class SimView {
 
-    static int N;
-    static int M;
-    static int lambda;
-    static int P_min;
-    static int P_max;
-    static int K_min;
-    static int K_max;
-    static int f;
+    private double lambda;
+    private double Picklower; 
+    private double Pickwidth;
+    private double Paylower; 
+    private double Paywidth;
+    private Random rand;
+    int test = 0;
 
     StoreState StoreState;
 
-    public SimView(StoreState StoreState) {
+    public SimView(StoreState StoreState,double Lambda, double Picklower, double Pickwidth, double Paylower, double Paywidth, int N, int M) {
         this.StoreState=StoreState;
+        this.lambda = Lambda;
+        this.Picklower = Picklower;
+        this.Pickwidth = Pickwidth;
+        this.Paylower = Paylower;
+        this.Paywidth = Paywidth;
 
         System.out.println("Parametrar");
         System.out.println("==========");
@@ -27,9 +33,9 @@ public class SimView {
         System.out.println("Antal Kassor: " + N);
         System.out.println("Max som ryms: " + M);
         System.out.println("Ankomsthastighet: " + lambda);
-        System.out.println("Plocktider: [" + P_min + ", " + P_max +"]");
-        System.out.println("Betaltider: [" + K_min + ", " + K_max +"]");
-        System.out.println("Frär: " + f);
+        System.out.println("Plocktider: [" + Picklower + ", " + Pickwidth +"]");
+        System.out.println("Betaltider: [" + Paylower + ", " + Paywidth +"]");
+        System.out.println("Frör: " + lambda);
         System.out.println("");
         System.out.println("Färlopp");
         System.out.println("=======");
@@ -39,11 +45,13 @@ public class SimView {
         }
 
     public void printEvent() {
-        System.out.println(StoreState.GetCurrentTime() + StoreState.getName() + StoreState.getCurrCustom() +  StoreState.Open 
-                + StoreState.getLedigaKassor() + StoreState.getTimeInKassa() + 
-                StoreState.getCustomers() + StoreState.getMissedCustomers() + StoreState.getKöat() 
-                + StoreState.getTimeInQueue() +StoreState.GetCQ().getCustomerQueueLength()
-                + StoreState.GetCQ().GetCustomerQueue());
+    	test++;
+    	System.out.println(test);
+        System.out.println(StoreState.GetCurrentTime() +"  "+ StoreState.getName() +"  "+ StoreState.getCurrCustom() +"  "+  StoreState.Open 
+                +"  "+ StoreState.getFreeRegister() +"  "+ StoreState.getTimeInKassa() +"  "+ 
+                StoreState.getCustomers() +"  "+ StoreState.getMissedCustomers() +"  "+ StoreState.getKöat() 
+                +"  "+ StoreState.getTimeInQueue() +"  "+StoreState.GetCQ().getCustomerQueueLength()
+                +"  "+ StoreState.GetCQ().GetCustomerQueue());
 
     }
 
