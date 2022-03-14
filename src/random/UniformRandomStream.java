@@ -1,3 +1,6 @@
+//creates randomised time for pickingtime and payingtime
+
+*@author Jonathan Westerdahl, Felix Woxblom,Isak Sandegren,Viktor Sjöstedt
 
 package random;
 
