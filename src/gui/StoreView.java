@@ -14,7 +14,7 @@ import state.StoreState;
 /**
  * The constructor
  *
- *
+ */
 
 public class StoreView extends SimView implements Observer {
 
