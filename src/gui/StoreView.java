@@ -27,7 +27,7 @@ public class StoreView extends SimView implements Observer {
 	private long seed;		//seed for simulation
 
 	StoreState StoreState;
-	String CustVal;
+	String CustVal;         // value of customernumber as a string
 
 	//StoreView prints out the starting variables of the result screen
 	
