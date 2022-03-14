@@ -14,16 +14,23 @@ public class SimState extends Observable {
 	public SimState() {
 
 	}
-
+	/**
+ 	*  Sets the simulation to running
+ 	*/
 	public void StartSim() {
 		Running = true;
 	}
-
+/**
+ *  stops the simulation 
+ */
 	public void StopSim() {
 		Running = false;
 		return;
 	}
-
+/**
+ * checks if the simulation is running
+ * @return 
+ */
 	public boolean RunCheck() {
 		return Running;
 
