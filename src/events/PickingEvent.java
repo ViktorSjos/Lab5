@@ -4,6 +4,13 @@ import GeneralSim.Event;
 import GeneralSim.EventQueue;
 import state.*;
 
+/**
+ * A class representing an event where the customer picks up items and goes to
+ * pay
+ * 
+ * @author Jonathan Westerdahl, Felix Woxblom, Isak Sandegren, Viktor Sjöstedt
+ *
+ */
 public class PickingEvent extends Event {
 
 	private StoreState sState;
@@ -15,7 +22,9 @@ public class PickingEvent extends Event {
 	/**
 	 * The constructor
 	 * 
-	 * @param Tar in
+	 * @param sState   Object for the StoreState class
+	 * @param eQueue   Object for the EventQueue class
+	 * @param customer The customer ID
 	 */
 	public PickingEvent(StoreState sState, EventQueue eQueue, int customer) {
 		super(sState, eQueue);
@@ -27,8 +36,7 @@ public class PickingEvent extends Event {
 	}
 
 	/**
-	 * If there are free registers paying event gets sent to eventQueue, otherwise
-	 * send customer to CustomerQueue
+	 * Runs the event
 	 */
 	public void Execute() {
 		eQueue.RemoveEvent();
@@ -45,11 +53,13 @@ public class PickingEvent extends Event {
 		} else {
 			sState.UpdateObs();
 			cQueue.addToArray(this.customer);
-			sState.IncK�at();
+			sState.IncKöat();
 		}
-
 	}
 
+	/**
+	 * Gets the time
+	 */
 	public double GetExecutionTime() {
 		return this.ExTime;
 	}
