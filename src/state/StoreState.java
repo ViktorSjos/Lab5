@@ -279,83 +279,124 @@ public class StoreState extends SimState {
 	public void ChangeName(String NewName) {
 		Name = NewName;
 	}
-
+/**
+ * 
+ *@return returns LedigaKassor
+ */
 	public int getLedigaKassor() {
 		return LedigaKassor;
 	}
-
+/**
+ * @return returns time spent in registers
+ */
 	public double getTimeInKassa() {
 		return TimeInKassa;
 	}
-
+/**
+ * sets the time in registers
+ */
 	public void setTimeInKassa(double timeInKassa) {
 		TimeInKassa = timeInKassa;
 	}
-
+/**
+ * @return returns the current amount of customers in store
+ */
 	public int getCustomers() {
 		return Customers;
 	}
-
+/**
+ * sets the current amount of customers
+ */
 	public void setCustomers(int customers) {
 		Customers = customers;
 	}
-
+/**
+ * @return returns the value of missed costumers
+ */
 	public int getMissedCustomers() {
 		return MissedCustomers;
 	}
-
+/**
+ * sets missed customers
+ */
 	public void setMissedCustomers(int missedCustomers) {
 		MissedCustomers = missedCustomers;
 	}
-
+/**
+ * @return returns köat 
+ */
 	public int getKöat() {
 		return köat;
 	}
-
+/**
+ * sets köat
+ */
 	public void setKöat(int köat) {
 		this.köat = köat;
 	}
-
+/**
+ * @return returns time spend in queue
+ */
 	public double getTimeInQueue() {
 		return TimeInQueue;
 	}
-
+/**
+ * sets time in queue
+ */
 	public void setTimeInQueue(double timeInQueue) {
 		TimeInQueue = timeInQueue;
 	}
-
+/**
+ * sets name
+ */
 	public void setName(String name) {
 		Name = name;
 	}
-
+/**
+ *@return returns name
+ */
 	public String getName() {
 		return Name;
 	}
-
+/**
+ * @return returns CustomerNr
+ */
 	public int getCurrCustomNR() {
 		return CustomerNr;
 	}
-
+/**
+ * @return returns currentcustomer
+ */
 	public int getCurrCustom() {
 		return currCustom;
 	}
-
+/**
+ * sets currCUstomer
+ */
 	public void setCurrCustom(int currCustom) {
 		this.currCustom = currCustom;
 	}
-
+/**
+ *  sets köat
+ */
 	public void IncKöat() {
 		köat++;
 	}
-
+/**
+ *  @return returns kassor
+ */
 	public int GetRegisters() {
 		return this.Kassor;
 	}
-
+/**
+ * @return returns customersPaid
+ */
 	public int GetCustomerPaid() {
 		return CustomerPaid;
 	}
-
+/**
+ * @return returns customers payed
+ */
 	public int GetMaxCustomers() {
 		return MaxCustomers;
 	}
@@ -367,28 +408,40 @@ public class StoreState extends SimState {
 	public double GetArrivaltime() {
 		return Erand.next();
 	}
-
+/**
+ * @return returns the time for payingevent
+ */	
 	public double GetPaytime() {
 		return UrandPay.next();
 	}
-
+/**
+ * @return returns the time for pickingevent
+ */
 	public double GetPicktime() {
 		return UrandPick.next();
 	}
-
+/**
+ * @return returns cutomerqueue
+ */
 	public CustomerQueue GetCQ() {
 		return Queue;
 	}
-
+/**
+ * @return returns the state
+ */
 	public StoreState GetState() {
 		return this;
 	}
-
+/**
+ * sets simstoptime
+ */
 	public void SimStopTime(double time) {
 		SimStopTime = time;
 
 	}
-
+/**
+ * @return returns simstoptime
+ */
 	public double GetSimStopTime() {
 		return SimStopTime;
 	}
