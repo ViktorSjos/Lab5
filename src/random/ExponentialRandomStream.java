@@ -1,3 +1,6 @@
+// creates random time for arrivaltime
+
+*@author Jonathan Westerdahl, Felix Woxblom,Isak Sandegren,Viktor Sjöstedt
 
 package random;
 
