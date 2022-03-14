@@ -1,3 +1,4 @@
+*@author Jonathan Westerdahl, Felix Woxblom,Isak Sandegren,Viktor SjÃ¶stedt
 package gui;
 
 import java.util.Observable;
@@ -10,19 +11,26 @@ import GeneralSim.SimView;
 import state.CustomerQueue;
 import state.StoreState;
 
+/**
+ * The constructor
+ *
+ *
+
 public class StoreView extends SimView implements Observer {
 
-	private double lambda;
-	private double Picklower;
-	private double Pickwidth;
-	private double Paylower;
-	private double Paywidth;
-	private Random rand;
-	private long seed;
+	private double lambda; 		//variable for arrivaltimes
+	private double Picklower;	//lower limit for picking time
+	private double Pickwidth;	//upper limit for picking time
+	private double Paylower;	//lower limit for paying time
+	private double Paywidth;	//upper limit for paying time
+	private Random rand;		
+	private long seed;		//seed for simulation
 
 	StoreState StoreState;
 	String CustVal;
 
+	//StoreView prints out the starting variables of the result screen
+	
 	public StoreView(StoreState StoreState, double Lambda, double Picklower, double Pickwidth, double Paylower,
 			double Paywidth, int N, int M, long seed) {
 		StoreState.addObserver(this);
@@ -43,15 +51,19 @@ public class StoreView extends SimView implements Observer {
 		System.out.println("Ankomsthastighet: " + lambda);
 		System.out.println("Plocktider: [" + Picklower + ", " + Pickwidth + "]");
 		System.out.println("Betaltider: [" + Paylower + ", " + Paywidth + "]");
-		System.out.println("Frö: " + seed);
+		System.out.println("FrÃ¶: " + seed);
 		System.out.println("");
-		System.out.println("Förlopp");
+		System.out.println("FÃ¶rlopp");
 		System.out.println("=======");
-		System.out.println("Tid" + "\t" + "Händelse" + "\t" + "Kund" + "\t" + "?" + "\t" + "led" + "\t" + "ledT" + "\t"
-				+ "I" + "\t" + "$" + "\t" + ":(" + "\t" + "köat" + "\t" + "köT" + "\t" + "käar" + "\t" + "Kassakö");
+		System.out.println("Tid" + "\t" + "HÃ¤ndelse" + "\t" + "Kund" + "\t" + "?" + "\t" + "led" + "\t" + "ledT" + "\t"
+				+ "I" + "\t" + "$" + "\t" + ":(" + "\t" + "kÃ¶at" + "\t" + "kÃ¶T" + "\t" + "kÃ¤ar" + "\t" + "KassakÃ¶");
 
 	}
 
+	
+	//update prints out the values of all variables and times for each event in 
+	//the order the events occur
+	
 	public void update(Observable arg0, Object arg1) {
 
 		if (StoreState.getName() == "Start") {
@@ -69,11 +81,13 @@ public class StoreView extends SimView implements Observer {
 		System.out.println(String.format("%.2f", StoreState.GetCurrentTime()) + "\t" + StoreState.getName() + "\t"
 				+ "\t" + CustVal + "\t" + StoreState.GetOpenOrClosed() + "\t" + StoreState.getFreeRegister() + "\t"
 				+ String.format("%.2f", StoreState.getTimeInKassa()) + "\t" + StoreState.getCustomers() + "\t"
-				+ StoreState.GetCustomerPaid() + "\t" + StoreState.getMissedCustomers() + "\t" + StoreState.getKöat()
+				+ StoreState.GetCustomerPaid() + "\t" + StoreState.getMissedCustomers() + "\t" + StoreState.getKÃ¶at()
 				+ "\t" + String.format("%.2f", StoreState.getTimeInQueue()) + "\t"
 				+ StoreState.GetCQ().getCustomerQueueLength() + "\t" + StoreState.GetCQ().GetCustomerQueue());
 
 	}
+	
+	//resultat print some results from the simulation in the bottom of the console
 
 	public void resultat() {
 		System.out.println("RESULTAT");
@@ -90,12 +104,12 @@ public class StoreView extends SimView implements Observer {
 				+ String.format("%.2f",
 						(((StoreState.getTimeInKassa() / StoreState.getLedigaKassor()) / (StoreState.GetCurrentTime())))
 								* 100)
-				+ "% av tiden från öppning tills sista kunden betalat).");
+				+ "% av tiden frÃ¥n Ã¶ppning tills sista kunden betalat).");
 		System.out.println("");
-		System.out.println("3) Total tid " + StoreState.getKöat() + " kunder tvingats köa: "
+		System.out.println("3) Total tid " + StoreState.getKÃ¶at() + " kunder tvingats kÃ¶a: "
 				+ String.format("%.2f", StoreState.getTimeInQueue()) + " te.");
-		System.out.println("Genomsnittlig kötid: "
-				+ String.format("%.2f", (StoreState.getTimeInQueue() / StoreState.getKöat())) + " te.");
+		System.out.println("Genomsnittlig kÃ¶tid: "
+				+ String.format("%.2f", (StoreState.getTimeInQueue() / StoreState.getKÃ¶at())) + " te.");
 
 	}
 
