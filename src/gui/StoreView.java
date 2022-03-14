@@ -1,7 +1,3 @@
-/*prints the results in the console
-*/
-
-*@author Jonathan Westerdahl, Felix Woxblom,Isak Sandegren,Viktor Sjöstedt
 package gui;
 
 import java.util.Observable;
@@ -15,25 +11,27 @@ import state.CustomerQueue;
 import state.StoreState;
 
 /**
- * The constructor
- *
+ * outputs variables from state
+ * 
+ * @author Jonathan Westerdahl, Felix Woxblom,Isak Sandegren,Viktor Sjöstedt
  */
 
 public class StoreView extends SimView implements Observer {
 
-	private double lambda; 		//variable for arrivaltimes
-	private double Picklower;	//lower limit for picking time
-	private double Pickwidth;	//upper limit for picking time
-	private double Paylower;	//lower limit for paying time
-	private double Paywidth;	//upper limit for paying time
-	private Random rand;		
-	private long seed;		//seed for simulation
+	private double lambda; // variable for arrivaltimes
+	private double Picklower; // lower limit for picking time
+	private double Pickwidth; // upper limit for picking time
+	private double Paylower; // lower limit for paying time
+	private double Paywidth; // upper limit for paying time
+	private Random rand;
+	private long seed; // seed for simulation
 
 	StoreState StoreState;
-	String CustVal;         // value of customernumber as a string
+	String CustVal; // value of customernumber as a string
 
-	/*StoreView prints out the starting variables of the result screen
-	*/
+	/*
+	 * StoreView prints out the starting variables of the result screen
+	 */
 	public StoreView(StoreState StoreState, double Lambda, double Picklower, double Pickwidth, double Paylower,
 			double Paywidth, int N, int M, long seed) {
 		StoreState.addObserver(this);
@@ -63,11 +61,14 @@ public class StoreView extends SimView implements Observer {
 
 	}
 
+	/*
+	 * update prints out the values of all variables and times for each event in the
+	 * order the events occur
+	 */
 	
-	/*update prints out the values of all variables and times for each event in 
-	the order the events occur
-	*/
-	
+/**
+ * prints the current state
+ */
 	public void update(Observable arg0, Object arg1) {
 
 		if (StoreState.getName() == "Start") {
@@ -90,9 +91,11 @@ public class StoreView extends SimView implements Observer {
 				+ StoreState.GetCQ().getCustomerQueueLength() + "\t" + StoreState.GetCQ().GetCustomerQueue());
 
 	}
-	
-	/*resultat print some results from the simulation in the bottom of the console
-	*/
+
+	/**
+	 * 
+	 * resultat print some results from the simulation in the bottom of the console
+	 */
 
 	public void resultat() {
 		System.out.println("RESULTAT");
