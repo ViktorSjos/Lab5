@@ -1,3 +1,8 @@
+// Class resposible for creating the customerQueue
+
+
+*@author Jonathan Westerdahl, Felix Woxblom,Isak Sandegren,Viktor Sjöstedt
+
 package state;
 
 import java.util.ArrayList;
