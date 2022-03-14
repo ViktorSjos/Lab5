@@ -1,3 +1,6 @@
+/*prints the results in the console
+*/
+
 *@author Jonathan Westerdahl, Felix Woxblom,Isak Sandegren,Viktor Sjöstedt
 package gui;
 
@@ -29,8 +32,8 @@ public class StoreView extends SimView implements Observer {
 	StoreState StoreState;
 	String CustVal;         // value of customernumber as a string
 
-	//StoreView prints out the starting variables of the result screen
-	
+	/*StoreView prints out the starting variables of the result screen
+	*/
 	public StoreView(StoreState StoreState, double Lambda, double Picklower, double Pickwidth, double Paylower,
 			double Paywidth, int N, int M, long seed) {
 		StoreState.addObserver(this);
@@ -61,8 +64,9 @@ public class StoreView extends SimView implements Observer {
 	}
 
 	
-	//update prints out the values of all variables and times for each event in 
-	//the order the events occur
+	/*update prints out the values of all variables and times for each event in 
+	the order the events occur
+	*/
 	
 	public void update(Observable arg0, Object arg1) {
 
@@ -87,7 +91,8 @@ public class StoreView extends SimView implements Observer {
 
 	}
 	
-	//resultat print some results from the simulation in the bottom of the console
+	/*resultat print some results from the simulation in the bottom of the console
+	*/
 
 	public void resultat() {
 		System.out.println("RESULTAT");
