@@ -1,70 +1,137 @@
-package lab5.state;
+package state;
 
-import java.util.ArrayList;
+import java.util.Observable;
 
-import lab5.events.Event;
-import lab5.state.CreateCustomer.Customer;
+import random.ExponentialRandomStream;
+import random.UniformRandomStream;
 
+public class StoreState extends SimState {
 
+	private int LedigaKassor;
+	private int Customers = 0; // borde det inte vara så här det ska stå, alla som är inne i affären, Fylls
+	// alltid på med det minsta lediga positiva heltalet.
+	// CustomersPaying försvinner också den från customers, Då är en ny int ledig
+	// för nästa kund,
 
-public class StoreState {
-
-	private static int LedigaKassor;
-	private static int Customers = 0; // borde det inte vara sÃ¥ hÃ¤r det ska stÃ¥, alla som Ã¤r inne i affÃ¤ren, Fylls
-						// alltid pÃ¥ med det minsta lediga positiva heltalet.
-							// CustomersPaying fÃ¶rsvinner ocksÃ¥ den frÃ¥n customers, DÃ¥ Ã¤r en ny int ledig
-							// fÃ¶r nÃ¤sta kund,
-
-	static double currentTime = 0; // Ã¤ndra frÃ¥n mainloop i simulation
-	private static double TimeInQueue = 0; // en Variabel som costumerQueue fÃ¥r Ã¤ndra pÃ¥.
+	double currentTime = 0; // ändra från mainloop i simulation
+	private double TimeInQueue = 0; // en Variabel som costumerQueue får ändra på.
 	double TimePlockTid = 0; //
-	private static double TimeInKassa=0;
+	private double TimeInKassa = 0;
 	double LastTime = 0;
 	double LastTimePayed = 0;
-	
+	int customPaying = 0;
+	String openOrClosed = "";
+	double SimStopTime;
+
 	int MaxCustomers; // maximalt antal customers
-	private static int MissedCustomers = 0;
+	private int MissedCustomers = 0;
 
 	int CustomerNr = 0;
-	private static int currCustom = 0; // Variabel som Ã¤ndras nÃ¤r ett event kÃ¶rs fÃ¶r att veta vilken kund som gÃ¶r
-						// nÃ¥got. Skickas senare till view
-	private static int kÃ¶at = 0;
-	
-	private static String Name;
-	CustomerQueue Queue = new CustomerQueue();
-	public static boolean Open = false; // Om det fÃ¥r komma in nya kunder.
+	private int currCustom = 0; // Variabel som ändras när ett event körs för att veta vilken kund som gör
+	// något. Skickas senare till view
+	private int köat = 0;
+	private int CustomerPaid = 0;
 
-	public StoreState(int AntalKassor, int maxKunder) {
+	private String Name;
+	CustomerQueue Queue = new CustomerQueue();
+	public boolean Open = false; // Om det får komma in nya kunder.
+	ExponentialRandomStream Erand;
+	UniformRandomStream UrandPay;
+	UniformRandomStream UrandPick;
+
+	public StoreState(int maxKunder, int AntalKassor, CustomerQueue Que, ExponentialRandomStream Erand,
+			UniformRandomStream UrandPay, UniformRandomStream UrandPick) {
 		// Constructor
-		setLedigaKassor(AntalKassor);
-		MaxCustomers = maxKunder;
+		this.Erand = Erand;
+		this.UrandPay = UrandPay;
+		this.UrandPick = UrandPick;
+		this.LedigaKassor = AntalKassor;
+		this.MaxCustomers = maxKunder;
 
 	}
-	
-	public int CustomerArrived() {
-		setCustomers(getCustomers() + 1);
-		return CustomerNr;
+
+	public void IncKöat() {
+		köat++;
+	}
+
+	public int GetCustomerPaid() {
+		return CustomerPaid;
+	}
+
+	public double GetArrivaltime() {
+		return Erand.next();
+	}
+
+	public double GetPaytime() {
+		return UrandPay.next();
+	}
+
+	public double GetPicktime() {
+		return UrandPick.next();
+	}
+
+	public int AddCustomer() {
+		CustomerNr++;
+		Customers++;
+		return CustomerNr - 1;
+	}
+
+	public void RemoveCustomer() {
+		Customers--;
+		CustomerPaid++;
+	}
+
+	public boolean OpenCheck() {
+		return Open;
+	}
+
+	public void OpenSet() {
+		Open = true;
+	}
+
+	public CustomerQueue GetCQ() {
+		return Queue;
+	}
+
+	public void UpdateObs() {
+		setChanged();
+		notifyObservers();
 	}
 
 	public boolean SpaceAvalible() {
-		CustomerNr++; //kundens nummer gÃ¥r upp med varje som fÃ¶rsÃ¶ker komma in. eller kommer in.
-		if (getCustomers() > MaxCustomers) {
-			setMissedCustomers(getMissedCustomers() + 1);
+		// kundens nummer går upp med varje som försöker komma in. eller kommer in.
+		if (Customers >= MaxCustomers) {
+			MissedCustomers++;
+			CustomerNr++;
 			return false;
 		}
-		
+
 		return true;
 	}
 
-
-	public void UpdateTimeInQueue(){//Varje gÃ¥ng kÃ¶n Ã¤ndras mÃ¥ste denna uppdateras, Innan kÃ¶n har uppdaterats. AlltsÃ¥ vid plockhÃ¤ndelse och betalningshÃ¤ndelse.
-		setTimeInQueue(getTimeInQueue() + CustomerQueue.getCustomerQueueLength()*(currentTime-LastTime)); 
-		LastTime=currentTime; // LastTime Ã¤r senast kÃ¶n blev uppdaterad.
+	public StoreState GetState() {
+		return this;
 	}
 
-	public void UpdateTimeLedigaKassor(){//Varje gÃ¥ng Kassorna uppdateras Ã¤ndras mÃ¥ste denna uppdateras innan uppdateringen sker, med tiden som uppdateringen ska ske
-		setTimeInKassa(getTimeInKassa() + getLedigaKassor().size()*(currentTime-LastTimePayed)); 
-		LastTimePayed=currentTime; // LastTime Ã¤r senast kÃ¶n blev uppdaterad.
+	public void SimStopTime(double time) {
+		SimStopTime = time;
+
+	}
+
+	public double GetSimStopTime() {
+		return SimStopTime;
+	}
+
+	public void UpdateTimeInQueue() {// Varje gång kön ändras måste denna uppdateras, Innan kön har uppdaterats.
+										// Alltså vid plockhändelse och betalningshändelse.
+		setTimeInQueue(getTimeInQueue() + Queue.getCustomerQueueLength() * (currentTime - LastTime));
+		LastTime = currentTime; // LastTime är senast kön blev uppdaterad.
+	}
+
+	public void UpdateTimeLedigaKassor() {// Varje gång Kassorna uppdateras ändras måste denna uppdateras innan
+											// uppdateringen sker, med tiden som uppdateringen ska ske
+		setTimeInKassa(getTimeInKassa() + getLedigaKassor() * (currentTime - LastTimePayed));
+		LastTimePayed = currentTime; // LastTime är senast kön blev uppdaterad.
 	}
 
 	/**
@@ -73,7 +140,7 @@ public class StoreState {
 	 * @return Free registers
 	 */
 	public int getFreeRegister() {
-		return getLedigaKassor();
+		return LedigaKassor;
 	}
 
 	/**
@@ -82,7 +149,7 @@ public class StoreState {
 	 * @param num The amount to change by
 	 */
 	public void changeFreeRegisters(int num) {
-		setLedigaKassor(getLedigaKassor() + num);
+		LedigaKassor += num;
 	}
 
 	/**
@@ -91,7 +158,7 @@ public class StoreState {
 	 * @param num The amount to change by
 	 */
 	public void changeCustomersPaying(int num) {
-		// Skrivit det sÃ¥hÃ¤r tills vi vet hur vi gÃ¶r med arrays
+		// Skrivit det såhär tills vi vet hur vi gör med arrays
 		customPaying += num;
 	}
 
@@ -105,14 +172,17 @@ public class StoreState {
 		setCurrCustom(getCurrCustom() + num);
 	}
 
-	/**
-	 * Changes the amount of customers currently picking items
-	 * 
-	 * @param num
-	 */
-	public void changeCustomersShopping(int num) {
-		// Skrivit det sÃ¥hÃ¤r tills vi vet hur vi gÃ¶r med arrays
-		customInStore += num;
+	public void StartSim() {
+		Running = true;
+	}
+
+	public void StopSim() {
+		Running = false;
+	}
+
+	public boolean RunCheck() {
+		return Running;
+
 	}
 
 	/**
@@ -127,7 +197,15 @@ public class StoreState {
 	 * 
 	 * @return current time
 	 */
-	public static double getCurrentTime() {
+	public void CurrentTime(double time) {
+		currentTime = time;
+	}
+
+	/**
+	 * 
+	 * @return 
+	 */
+	public double GetCurrentTime() {
 		return currentTime;
 	}
 
@@ -139,19 +217,16 @@ public class StoreState {
 	public boolean getShopOpen() {
 		return Open;
 	}
-	public void ChangeName(String NewName){
-		setName(NewName);
+
+	public void ChangeName(String NewName) {
+		Name = NewName;
 	}
 
-	public static int getLedigaKassor() {
+	public int getLedigaKassor() {
 		return LedigaKassor;
 	}
 
-	public void setLedigaKassor(int ledigaKassor) {
-		LedigaKassor = ledigaKassor;
-	}
-
-	public static double getTimeInKassa() {
+	public double getTimeInKassa() {
 		return TimeInKassa;
 	}
 
@@ -159,7 +234,7 @@ public class StoreState {
 		TimeInKassa = timeInKassa;
 	}
 
-	public static int getCustomers() {
+	public int getCustomers() {
 		return Customers;
 	}
 
@@ -167,7 +242,7 @@ public class StoreState {
 		Customers = customers;
 	}
 
-	public static int getMissedCustomers() {
+	public int getMissedCustomers() {
 		return MissedCustomers;
 	}
 
@@ -175,23 +250,32 @@ public class StoreState {
 		MissedCustomers = missedCustomers;
 	}
 
-	public static int getKÃ¶at() {
-		return kÃ¶at;
+	public int getKöat() {
+		return köat;
 	}
 
-	public void setKÃ¶at(int kÃ¶at) {
-		this.kÃ¶at = kÃ¶at;
+	public void setKöat(int köat) {
+		this.köat = köat;
 	}
 
-	public static double getTimeInQueue() {
+	public double getTimeInQueue() {
 		return TimeInQueue;
+	}
+
+	public String GetOpenOrClosed() {
+		if (OpenCheck()) {
+			return "O";
+
+		} else {
+			return "C";
+		}
 	}
 
 	public void setTimeInQueue(double timeInQueue) {
 		TimeInQueue = timeInQueue;
 	}
 
-	public static String getName() {
+	public String getName() {
 		return Name;
 	}
 
@@ -199,7 +283,11 @@ public class StoreState {
 		Name = name;
 	}
 
-	public static int getCurrCustom() {
+	public int getCurrCustomNR() {
+		return CustomerNr;
+	}
+
+	public int getCurrCustom() {
 		return currCustom;
 	}
 

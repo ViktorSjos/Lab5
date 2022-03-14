@@ -7,7 +7,7 @@ public class PickingEvent extends Event {
 	private StoreState sState;
 	private EventQueue eQueue;
 	private CustomerQueue cQueue;
-	private CreateCustomer customer;
+	private int customer;
 	double ExTime;
 
 	/**
@@ -15,29 +15,39 @@ public class PickingEvent extends Event {
 	 * 
 	 * @param Tar in
 	 */
-	public PickingEvent(StoreState sState, EventQueue eQueue, CustomerQueue cQueue, CreateCustomer customer) {
-		super(time, "Picking");
+	public PickingEvent(StoreState sState, EventQueue eQueue, int customer) {
+		super(sState, eQueue);
 		this.sState = sState;
 		this.eQueue = eQueue;
-		this.cQueue = cQueue;
+		this.cQueue = sState.GetCQ();
 		this.customer = customer;
-		ExTime = this.ExecutionTime(state.getCurrentTime+Timer.timeToPick());
+		ExTime = sState.GetCurrentTime() + sState.GetPicktime();
 	}
 
 	/**
 	 * If there are free registers paying event gets sent to eventQueue, otherwise
 	 * send customer to CustomerQueue
 	 */
-	private void Execute() {
+	public void Execute() {
+		eQueue.RemoveEvent();
+		sState.CurrentTime(this.ExTime);
+		sState.ChangeName("Picking");
+		sState.changeCurrentCustomer(this.customer);
 		if (sState.getFreeRegister() > 0) {
-			sState.changeCurrentCustomer(customer.GetId);
-			Event2 paying = new PayingEvent(sState, eQueue, cQueue, sState.getCurrentTime() + Timer.timeToPay());
-			sState.changeCustomersShopping(-1);
-			sState.changeFreeRegisters(-1);
-			sState.changeCustomersPaying(+1);
+			Event paying = new PayingEvent(sState, eQueue, this.customer, this.cQueue);
 			eQueue.AddEvent(paying);
+			sState.UpdateObs();
+			sState.changeFreeRegisters(-1);
 		} else {
-			cQueue.addToArray(id);
+			cQueue.addToArray(this.customer);
+			sState.IncKöat();
+			sState.UpdateObs();
 		}
+		sState.UpdateTimeInQueue();
+		sState.UpdateTimeLedigaKassor();
+	}
+
+	public double GetExecutionTime() {
+		return this.ExTime;
 	}
 }

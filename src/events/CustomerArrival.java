@@ -1,12 +1,10 @@
 package events;
 
-import java.util.Timer;
-import state.CreateCustomer.Customer;
 import state.SimState;
 import state.StoreState;
 
-public class CustomerArrival extends Event{
-	
+public class CustomerArrival extends Event {
+
 	int Customer;
 	double ExTime;
 	String name;
@@ -17,38 +15,46 @@ public class CustomerArrival extends Event{
 		super(state, queue);
 		this.state = state;
 		this.queue = queue;
-		name = "Ankomst";
-		ExTime = this.ExecutionTime(state.getCurrentTime+Timer.timeToNextCustomer()); //calculate time
+		name = "Arrival";
+		ExTime = state.GetCurrentTime() + state.GetArrivaltime(); // calculate time
 	}
-	
+
 	public void Execute() {
-		StoreState.CurrentTime() = this.ExTime;
-		
-		//SEND CUTOMER ARRIVED TO VIEW
-		
-		if(!state.RunCheck()) {
+		queue.RemoveEvent();
+		state.CurrentTime(this.ExTime);
+
+		if (!state.RunCheck()) {
 			return;
 		}
-		if(!state.SpaceAvalible()) {
-			//CALL FUNTION
+		if (!state.OpenCheck()) {
+			state.setCurrCustom(state.getCurrCustomNR());
+			state.ChangeName(name);
+			state.UpdateObs();
 			return;
 		}
-		//Create this customer
-		this.Customer = state.AddCustomer();
-		view(ExTime, name, this.Customer);
-		queue.AddEvent(PlockEvent(state, queue, this.Customer));
-		
-		//Add next cutomer
+		state.UpdateTimeInQueue();
+		state.UpdateTimeLedigaKassor();
 		CustomerArrival FirstCustomer = new CustomerArrival(state, queue);
 		queue.AddEvent(FirstCustomer);
-		
-		
-		
-		
-	}
-	
-	
-	
+		if (!state.SpaceAvalible()) {
+			state.setCurrCustom(state.getCurrCustomNR());
+			state.ChangeName(name);
+			state.UpdateObs();
+			return;
+		}
 
+		// Create this customer
+		state.ChangeName(name);
+		this.Customer = state.AddCustomer();
+		state.setCurrCustom(this.Customer);
+		PickingEvent pick = new PickingEvent(state, queue, this.Customer);
+		queue.AddEvent(pick);
+		// Add next cutomer
+		state.UpdateObs();
+	}
+
+	public double GetExecutionTime() {
+		return this.ExTime;
+	}
 
 }

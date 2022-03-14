@@ -1,6 +1,6 @@
 package events;
 
-import java.awt.Taskbar.State;
+
 
 import state.*;
 
@@ -8,18 +8,18 @@ public class Event {
 	
 	private StoreState state;
 	private EventQueue queue;
-	private int ExTime;
+	private double ExTime;
 
 	public Event(StoreState state, EventQueue queue) {
 		this.state = state;
 		this.queue = queue;
 	}
 	
-	public void ExecutionTime(int t){
-		this.ExTime = t;
+	public void ExecutionTime(double d){
+		this.ExTime = d;
 	}
 	
-	public int GetExecutionTime() {
+	public double GetExecutionTime() {
 		return this.ExTime;
 	}
 	
@@ -34,54 +34,11 @@ public class Event {
 	public void ExectueEffect(SimState state) {
 		
 	}
-	
-	
 
-}
-
-/*package lab5.events;
-
-import lab5.state.*;
-
-public class Event2 {
-
-	public double currTime;
-	public String eventName;
-
-	/**
-	 * The constructor
-	 * 
-	 * @param time,  The time of the event
-	 * @param event, The name of the event
-	 */
-	public Event2(double time, String event) {
-		currTime = time;
-		eventName = event;
-	}
-
-	public void checkStop(SimState state) {
-		if (eventName == "StoppingEvent") {
-			state.stop();
-		}
-	}
-
-	/**
-	 * Gets the current time of the store
-	 * 
-	 * @return the current time
-	 */
-	public double getCurrentTime() {
-		return currTime;
-	}
-
-	/**
-	 * Gets the current event name
-	 * 
-	 * @return the event name
-	 */
-	public String getCurrentEventName() {
-		return eventName;
+	public void Execute() {
+		// TODO Auto-generated method stub
+		
 	}
 
 }
-*/
+

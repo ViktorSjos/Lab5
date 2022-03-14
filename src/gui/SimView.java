@@ -1,59 +1,101 @@
-package lab5.gui;
+package gui;
 
-import lab5.events.Event;
-import lab5.events.EventQueue;
-import lab5.state.CustomerQueue;
-import lab5.state.StoreState;
+import java.util.Observable;
+import java.util.Observer;
+import java.util.Random;
 
-public class SimView {
-	
-	static int N;
-	static int M;
-	static int lambda;
-	static int P_min;
-	static int P_max;
-	static int K_min;
-	static int K_max;
-	static int f;
-	
-	
-	
-	public static void SimView() {
-		
+import events.Event;
+import events.EventQueue;
+import state.CustomerQueue;
+import state.StoreState;
+
+public class SimView implements Observer {
+
+	private double lambda;
+	private double Picklower;
+	private double Pickwidth;
+	private double Paylower;
+	private double Paywidth;
+	private Random rand;
+	private long seed;
+
+	StoreState StoreState;
+	String CustVal;
+
+	public SimView(StoreState StoreState, double Lambda, double Picklower, double Pickwidth, double Paylower,
+			double Paywidth, int N, int M, long seed) {
+		StoreState.addObserver(this);
+
+		this.StoreState = StoreState;
+		this.lambda = Lambda;
+		this.Picklower = Picklower;
+		this.Pickwidth = Pickwidth;
+		this.Paylower = Paylower;
+		this.Paywidth = Paywidth;
+		this.seed = seed;
+
 		System.out.println("Parametrar");
 		System.out.println("==========");
 		System.out.println("");
 		System.out.println("Antal Kassor: " + N);
 		System.out.println("Max som ryms: " + M);
 		System.out.println("Ankomsthastighet: " + lambda);
-		System.out.println("Plocktider: [" + P_min + ", " + P_max +"]");
-		System.out.println("Betaltider: [" + K_min + ", " + K_max +"]");
-		System.out.println("FrÃ¶: " + f);
+		System.out.println("Plocktider: [" + Picklower + ", " + Pickwidth + "]");
+		System.out.println("Betaltider: [" + Paylower + ", " + Paywidth + "]");
+		System.out.println("Frö: " + seed);
 		System.out.println("");
-		System.out.println("FÃ¶rlopp");
+		System.out.println("Förlopp");
 		System.out.println("=======");
-		System.out.println("Tid   HÃ¤ndelse   Kund   ?   led   ledT   I   $   :-(   kÃ¶at   kÃ¶T   kÃ¶ar   KassakÃ¶");
-		
-			
-		}
-	
-	public void printEvent() {
-		System.out.println(StoreState.getCurrentTime() + StoreState.getName() + StoreState.getCurrCustom() +  StoreState.Open 
-				+ StoreState.getLedigaKassor() + StoreState.getTimeInKassa() + 
-				StoreState.getCustomers() + StoreState.getMissedCustomers() + StoreState.getKÃ¶at() 
-				+ StoreState.getTimeInQueue() + CustomerQueue.getCustomerQueueLength()
-				+ CustomerQueue.customerQueue);
-		
+		System.out.println("Tid" + "\t" + "Händelse" + "\t" + "Kund" + "\t" + "?" + "\t" + "led" + "\t" + "ledT" + "\t"
+				+ "I" + "\t" + "$" + "\t" + ":(" + "\t" + "köat" + "\t" + "köT" + "\t" + "käar" + "\t" + "Kassakö");
+
 	}
-		
-	
-	
-		
-		
-	
-	
-	public static void main(String[] args) {
-		SimView();
+
+	public void update(Observable arg0, Object arg1) {
+
+		if (StoreState.getName() == "Start") {
+			System.out.println(String.format("%.2f", StoreState.GetCurrentTime()) + "\t" + StoreState.getName());
+			return;
+		}
+		if (StoreState.getName() == "Stop") {
+			System.out.println(String.format("%.2f", StoreState.GetSimStopTime()) + "\t" + StoreState.getName());
+			return;
+		}
+		String CustVal = String.valueOf(StoreState.getCurrCustom());
+		if (StoreState.getName() == "Closed") {
+			CustVal = "---";
+		}
+		System.out.println(String.format("%.2f", StoreState.GetCurrentTime()) + "\t" + StoreState.getName() + "\t"
+				+ "\t" + CustVal + "\t" + StoreState.GetOpenOrClosed() + "\t" + StoreState.getFreeRegister() + "\t"
+				+ String.format("%.2f", StoreState.getTimeInKassa()) + "\t" + StoreState.getCustomers() + "\t"
+				+ StoreState.GetCustomerPaid() + "\t" + StoreState.getMissedCustomers() + "\t" + StoreState.getKöat()
+				+ "\t" + String.format("%.2f", StoreState.getTimeInQueue()) + "\t"
+				+ StoreState.GetCQ().getCustomerQueueLength() + "\t" + StoreState.GetCQ().GetCustomerQueue());
+
+	}
+
+	public void resultat() {
+		System.out.println("RESULTAT");
+		System.out.println("========");
+		System.out.println("");
+		System.out.println("1) Av " + StoreState.getCurrCustomNR() + " handlade "
+				+ (StoreState.getCurrCustomNR() - StoreState.getMissedCustomers()) + " medan "
+				+ StoreState.getMissedCustomers() + " missades.");
+		System.out.println("");
+		System.out.println("2) Total tid " + StoreState.getLedigaKassor() + " kassor varit lediga: "
+				+ String.format("%.2f", StoreState.getTimeInKassa()) + " te.");
+		System.out.println("Genomsnittlig ledig kassatid: "
+				+ String.format("%.2f", (StoreState.getTimeInKassa() / StoreState.getLedigaKassor())) + " te. (dvs "
+				+ String.format("%.2f",
+						(((StoreState.getTimeInKassa() / StoreState.getLedigaKassor()) / (StoreState.GetCurrentTime())))
+								* 100)
+				+ "% av tiden från öppning tills sista kunden betalat).");
+		System.out.println("");
+		System.out.println("3) Total tid " + StoreState.getKöat() + " kunder tvingats köa: "
+				+ String.format("%.2f", StoreState.getTimeInQueue()) + " te.");
+		System.out.println("Genomsnittlig kötid: "
+				+ String.format("%.2f", (StoreState.getTimeInQueue() / StoreState.getKöat())) + " te.");
+
 	}
 
 }
