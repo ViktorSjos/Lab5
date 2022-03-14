@@ -5,16 +5,23 @@ import java.util.Observable;
 import random.ExponentialRandomStream;
 import random.UniformRandomStream;
 
+/**
+ * @author Jonathan Westerdahl, Felix Woxblom,Isak Sandegren,Viktor SjÃ¶stedt
+ * 		
+ *         represents the current state of the simulation. And keeps track of
+ *         variables related to view.
+ * 
+ */
 public class StoreState extends SimState {
 
 	private int LedigaKassor;
-	private int Customers = 0; // borde det inte vara så här det ska stå, alla som är inne i affären, Fylls
-	// alltid på med det minsta lediga positiva heltalet.
-	// CustomersPaying försvinner också den från customers, Då är en ny int ledig
-	// för nästa kund,
+	private int Customers = 0; // borde det inte vara sÃ¥ hÃ¤r det ska stÃ¥, alla som Ã¤r inne i affÃ¤ren, Fylls
+	// alltid pÃ¥ med det minsta lediga positiva heltalet.
+	// CustomersPaying fÃ¶rsvinner ocksÃ¥ den frÃ¥n customers, DÃ¥ Ã¤r en ny int ledig
+	// fÃ¶r nÃ¤sta kund,
 
-	private double currentTime = 0; // ändra från mainloop i simulation
-	private double TimeInQueue = 0; // en Variabel som costumerQueue får ändra på.
+	private double currentTime = 0; // Ã¤ndra frÃ¥n mainloop i simulation
+	private double TimeInQueue = 0; // en Variabel som costumerQueue fÃ¥r Ã¤ndra pÃ¥.
 	private double TimePlockTid = 0; //
 	private double TimeInKassa = 0;
 	private int Kassor;
@@ -28,19 +35,35 @@ public class StoreState extends SimState {
 	private int MissedCustomers = 0;
 
 	private int CustomerNr = 0;
-	private int currCustom = 0; // Variabel som ändras när ett event körs för att veta vilken kund som gör
-	// något. Skickas senare till view
-	private int köat = 0;
+	private int currCustom = 0; // Variabel som Ã¤ndras nÃ¤r ett event kÃ¶rs fÃ¶r att veta vilken kund som gÃ¶r
+	// nÃ¥got. Skickas senare till view
+	private int kÃ¶at = 0;
 	private int CustomerPaid = 0;
 
 	private String Name;
 	CustomerQueue Queue = new CustomerQueue();
-	public boolean Open = false; // Om det får komma in nya kunder.
+	public boolean Open = false; // Om det fÃ¥r komma in nya kunder.
 	ExponentialRandomStream Erand;
 	UniformRandomStream UrandPay;
 	UniformRandomStream UrandPick;
 
-	public StoreState(int M, int AntalKassor, CustomerQueue Que, double L, int SEED, double LOW_COLLECTION_TIME, double HIGH_COLLECTION_TIME, double LOW_PAYMENT_TIME, double HIGH_PAYMENT_TIME) {
+	/**
+	 * Constructor
+	 * 
+	 * Specifies
+	 * 
+	 * @param M
+	 * @param AntalKassor
+	 * @param Que
+	 * @param L
+	 * @param SEED
+	 * @param LOW_COLLECTION_TIME
+	 * @param HIGH_COLLECTION_TIME
+	 * @param LOW_PAYMENT_TIME
+	 * @param HIGH_PAYMENT_TIME
+	 */
+	public StoreState(int M, int AntalKassor, CustomerQueue Que, double L, int SEED, double LOW_COLLECTION_TIME,
+			double HIGH_COLLECTION_TIME, double LOW_PAYMENT_TIME, double HIGH_PAYMENT_TIME) {
 		// Constructor
 		this.LedigaKassor = AntalKassor;
 		this.Kassor = AntalKassor;
@@ -54,64 +77,60 @@ public class StoreState extends SimState {
 
 	}
 
-	public void IncKöat() {
-		köat++;
-	}
-	
-	public int GetRegisters() {
-		return this.Kassor;
-	}
-
-	public int GetCustomerPaid() {
-		return CustomerPaid;
-	}
-	
-	public int GetMaxCustomers() {
-		return MaxCustomers;
-	}
-
-	public double GetArrivaltime() {
-		return Erand.next();
-	}
-
-	public double GetPaytime() {
-		return UrandPay.next();
-	}
-
-	public double GetPicktime() {
-		return UrandPick.next();
-	}
-
+	/**
+	 * adds a customer to the stor
+	 * 
+	 * @return returns the customer number of the customer that triggered the event
+	 */
 	public int AddCustomer() {
 		CustomerNr++;
 		Customers++;
 		return CustomerNr - 1;
 	}
 
+	/**
+	 * removes customer from store
+	 */
+
 	public void RemoveCustomer() {
 		Customers--;
 		CustomerPaid++;
 	}
 
+	/**
+	 * checks if store is open
+	 * 
+	 * @return
+	 */
+
 	public boolean OpenCheck() {
 		return Open;
 	}
 
+	/**
+	 * sets the store to open
+	 */
 	public void OpenSet() {
 		Open = true;
 	}
 
-	public CustomerQueue GetCQ() {
-		return Queue;
-	}
-
+	/**
+	 * notifies the observer
+	 */
 	public void UpdateObs() {
 		setChanged();
 		notifyObservers();
 	}
 
+	/**
+	 * checks if there is space in the store if not the amount of missed customers
+	 * increases by one
+	 * 
+	 * @return
+	 */
+
 	public boolean SpaceAvalible() {
-		// kundens nummer går upp med varje som försöker komma in. eller kommer in.
+		// kundens nummer gÃ¥r upp med varje som fÃ¶rsÃ¶ker komma in. eller kommer in.
 		if (Customers >= MaxCustomers) {
 			MissedCustomers++;
 			CustomerNr++;
@@ -121,29 +140,27 @@ public class StoreState extends SimState {
 		return true;
 	}
 
-	public StoreState GetState() {
-		return this;
-	}
+	/**
+	 * Updates the time spent in the queue since the last time the function was
+	 * called.
+	 * 
+	 */
 
-	public void SimStopTime(double time) {
-		SimStopTime = time;
-
-	}
-
-	public double GetSimStopTime() {
-		return SimStopTime;
-	}
-
-	public void UpdateTimeInQueue() {// Varje gång kön ändras måste denna uppdateras, Innan kön har uppdaterats.
-										// Alltså vid plockhändelse och betalningshändelse.
+	public void UpdateTimeInQueue() {// Varje gÃ¥ng kÃ¶n Ã¤ndras mÃ¥ste denna uppdateras, Innan kÃ¶n har uppdaterats.
+										// AlltsÃ¥ vid plockhÃ¤ndelse och betalningshÃ¤ndelse.
 		setTimeInQueue(getTimeInQueue() + Queue.getCustomerQueueLength() * (this.currentTime - this.LastTime));
-		LastTime = currentTime; // LastTime är senast kön blev uppdaterad.
+		LastTime = currentTime; // LastTime Ã¤r senast kÃ¶n blev uppdaterad.
 	}
 
-	public void UpdateTimeLedigaKassor() {// Varje gång Kassorna uppdateras ändras måste denna uppdateras innan
+	/**
+	 * Updates the time the registers has been unnocipied since the last time the
+	 * function was called.
+	 * 
+	 */
+	public void UpdateTimeLedigaKassor() {// Varje gÃ¥ng Kassorna uppdateras Ã¤ndras mÃ¥ste denna uppdateras innan
 											// uppdateringen sker, med tiden som uppdateringen ska ske
 		setTimeInKassa(getTimeInKassa() + getLedigaKassor() * (this.currentTime - this.LastTimePayed));
-		LastTimePayed = currentTime; // LastTime är senast kön blev uppdaterad.
+		LastTimePayed = currentTime; // LastTime Ã¤r senast kÃ¶n blev uppdaterad.
 	}
 
 	/**
@@ -170,7 +187,7 @@ public class StoreState extends SimState {
 	 * @param num The amount to change by
 	 */
 	public void changeCustomersPaying(int num) {
-		// Skrivit det såhär tills vi vet hur vi gör med arrays
+		// Skrivit det sÃ¥hÃ¤r tills vi vet hur vi gÃ¶r med arrays
 		customPaying += num;
 	}
 
@@ -184,13 +201,25 @@ public class StoreState extends SimState {
 		setCurrCustom(getCurrCustom() + num);
 	}
 
+	/**
+	 * 
+	 * Sets the simulation to running
+	 */
 	public void StartSim() {
 		Running = true;
 	}
 
+	/**
+	 * stops the simulation
+	 * 
+	 */
 	public void StopSim() {
 		Running = false;
 	}
+
+	/**
+	 * checks if the simulation is running
+	 */
 
 	public boolean RunCheck() {
 		return Running;
@@ -215,7 +244,7 @@ public class StoreState extends SimState {
 
 	/**
 	 * 
-	 * @return 
+	 * @return returns the current time of the simmulation
 	 */
 	public double GetCurrentTime() {
 		return currentTime;
@@ -230,6 +259,23 @@ public class StoreState extends SimState {
 		return Open;
 	}
 
+	/**
+	 * 
+	 * @return returns the string o if the store is open otherwise C
+	 */
+	public String GetOpenOrClosed() {
+		if (OpenCheck()) {
+			return "O";
+
+		} else {
+			return "C";
+		}
+	}
+
+	/**
+	 * 
+	 * @param NewName returns the name of the last event that changed the state
+	 */
 	public void ChangeName(String NewName) {
 		Name = NewName;
 	}
@@ -262,37 +308,28 @@ public class StoreState extends SimState {
 		MissedCustomers = missedCustomers;
 	}
 
-	public int getKöat() {
-		return köat;
+	public int getKÃ¶at() {
+		return kÃ¶at;
 	}
 
-	public void setKöat(int köat) {
-		this.köat = köat;
+	public void setKÃ¶at(int kÃ¶at) {
+		this.kÃ¶at = kÃ¶at;
 	}
 
 	public double getTimeInQueue() {
 		return TimeInQueue;
 	}
 
-	public String GetOpenOrClosed() {
-		if (OpenCheck()) {
-			return "O";
-
-		} else {
-			return "C";
-		}
-	}
-
 	public void setTimeInQueue(double timeInQueue) {
 		TimeInQueue = timeInQueue;
 	}
 
-	public String getName() {
-		return Name;
-	}
-
 	public void setName(String name) {
 		Name = name;
+	}
+
+	public String getName() {
+		return Name;
 	}
 
 	public int getCurrCustomNR() {
@@ -307,4 +344,52 @@ public class StoreState extends SimState {
 		this.currCustom = currCustom;
 	}
 
+	public void IncKÃ¶at() {
+		kÃ¶at++;
+	}
+
+	public int GetRegisters() {
+		return this.Kassor;
+	}
+
+	public int GetCustomerPaid() {
+		return CustomerPaid;
+	}
+
+	public int GetMaxCustomers() {
+		return MaxCustomers;
+	}
+
+	/**
+	 * 
+	 * @return exponential random stream
+	 */
+	public double GetArrivaltime() {
+		return Erand.next();
+	}
+
+	public double GetPaytime() {
+		return UrandPay.next();
+	}
+
+	public double GetPicktime() {
+		return UrandPick.next();
+	}
+
+	public CustomerQueue GetCQ() {
+		return Queue;
+	}
+
+	public StoreState GetState() {
+		return this;
+	}
+
+	public void SimStopTime(double time) {
+		SimStopTime = time;
+
+	}
+
+	public double GetSimStopTime() {
+		return SimStopTime;
+	}
 }
